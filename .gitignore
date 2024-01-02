@@ -1,0 +1,6 @@
+.env
+venv
+models
+.DS_Store
+assets
+temp.txt
