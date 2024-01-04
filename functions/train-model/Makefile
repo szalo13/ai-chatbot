@@ -1,10 +1,3 @@
-# AWS_PROFILE=letsremote
-# ECR_ID = 098079051172.dkr.ecr.eu-central-1.amazonaws.com
-# FUNCTION_NAME = create-faiss-model-from-txt
-
-# ecr-login:
-# 	aws ecr get-login-password --region eu-central-1 --profile ${AWS_PROFILE} | docker login --username AWS --password-stdin ${ECR_ID}
-
 SHELL := /usr/bin/env sh
 
 default_region=eu-central-1

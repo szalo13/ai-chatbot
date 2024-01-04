@@ -26,7 +26,6 @@ def lambda_handler(event, context):
     # Step 1: Convert PDF to text
     doc = textract.process(PDF_PATH)
 
-    print('elo elo')
     # Step 2: Save to .txt and reopen (helps prevent issues)
     with open(TEMP_TXT_FILEPATH, 'w') as f:
         f.write(doc.decode('utf-8'))
