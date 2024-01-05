@@ -1,12 +1,18 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ChatbotService } from './chatbot.service';
+import { INewChatbot } from './chatbot.model';
 
-@Controller()
+@Controller('/chatbot')
 export class ChatbotController {
   constructor(private readonly chatbotService: ChatbotService) {}
 
-  @Get()
-  getHello(): string {
-    return null;
+  @Post('/')
+  create(@Body() newChatbot: INewChatbot): any {
+    return this.chatbotService.create(newChatbot);
+  }
+
+  @Get('/:publicId')
+  get(@Param('publicId') publicId: string): any {
+    return this.chatbotService.findByPublicId(publicId);
   }
 }
