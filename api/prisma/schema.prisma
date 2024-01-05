@@ -9,3 +9,44 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// ChatBot Module
+model Chatbot {
+  id        Int      @id @default(autoincrement())
+  name      String
+  modelId   Int
+  model     Model    @relation(fields: [modelId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Model {
+  id               Int            @id @default(autoincrement())
+  status           ModelStatus
+  dataSourceAssets DataSource[]
+  chatbots         Chatbot[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model DataSource {
+  id        Int        @id @default(autoincrement())
+  fileName  String
+  type      DataSourceType
+  modelId   Int
+  model     Model      @relation(fields: [modelId], references: [id])
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+enum ModelStatus {
+  toTrain
+  pending
+  created
+  failed
+}
+
+enum DataSourceType {
+  text
+  pdf
+}
