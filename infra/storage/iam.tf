@@ -45,6 +45,12 @@ resource "aws_iam_role_policy" "pdf_handler_lambda_policy" {
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
           "logs:PutLogEvents",
+        ],
+        Resource = "arn:aws:logs:*:*:*",
+        Effect   = "Allow",
+      },
+      {
+        Action = [
           // Permissions to get S3 access
           "s3:PutBucketPolicy",
           "s3:PutObject",
@@ -53,13 +59,6 @@ resource "aws_iam_role_policy" "pdf_handler_lambda_policy" {
           "ecr:BatchCheckLayerAvailability",
           "ecr:GetDownloadUrlForLayer",
           "ecr:BatchGetImage",
-        ],
-        Resource = "arn:aws:logs:*:*:*",
-        Effect   = "Allow",
-      },
-      {
-        Action = [
-          "s3:GetObject"
         ],
         Resource = "${aws_s3_bucket.assets_bucket.arn}/*",
         Effect   = "Allow",

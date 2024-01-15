@@ -2,7 +2,39 @@ resource "aws_lambda_function" "pdf_handler_lambda" {
   function_name = "${local.prefix}_pdf_handler"
   role = aws_iam_role.pdf_handler_lambda.arn
   package_type = "Image"
-  image_uri = "098079051172.dkr.ecr.eu-central-1.amazonaws.com/letsremote_faiss_model_from_txt@sha256:f6b88de8bf734b1de1d50df0ee1232adcb0119ba3f9a7e12d5468577f8c3ffc3"
+  image_uri = "098079051172.dkr.ecr.eu-central-1.amazonaws.com/letsremote_faiss_model_from_txt:db1be82a"
+  memory_size = 1024
+  timeout = 60
+
+  image_config {
+    command = ["transcript-create/app.lambda_handler"]
+  }
+}
+
+resource "aws_lambda_function" "model_create_lambda" {
+  function_name = "${local.prefix}_model_create"
+  role = aws_iam_role.pdf_handler_lambda.arn
+  package_type = "Image"
+  image_uri = "098079051172.dkr.ecr.eu-central-1.amazonaws.com/letsremote_faiss_model_from_txt:db1be82a"
+  memory_size = 1024
+  timeout = 60
+
+  image_config {
+    command = ["model-create/app.lambda_handler"]
+  }
+}
+
+resource "aws_lambda_function" "model_query_lambda" {
+  function_name = "${local.prefix}_model_query"
+  role = aws_iam_role.pdf_handler_lambda.arn
+  package_type = "Image"
+  image_uri = "098079051172.dkr.ecr.eu-central-1.amazonaws.com/letsremote_faiss_model_from_txt:db1be82a"
+  memory_size = 1024
+  timeout = 60
+
+  image_config {
+    command = ["model-query/app.lambda_handler"]
+  }
 }
 
 resource "aws_lambda_permission" "allow_bucket" {

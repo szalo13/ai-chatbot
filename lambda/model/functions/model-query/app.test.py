@@ -12,6 +12,9 @@ trigger_event = {
     })
 }
 
+# If you need to copy to lambda test environment
+print(json.dumps(trigger_event))
+
 # Call the lambda_handler function with the test event
 response = lambda_handler(trigger_event, {})
 print("Lambda Response:", response)

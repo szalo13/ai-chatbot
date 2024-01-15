@@ -4,7 +4,6 @@
 
 import json
 import os
-import textract
 import boto3
 
 from dotenv import load_dotenv
@@ -16,24 +15,22 @@ from langchain.vectorstores import FAISS
 
 load_dotenv()
 
-CACHE_DIR = '/tmp'
-FAISS_MODEL_PATH = '/tmp/trained'
+CACHE_DIR = "/tmp"
+FAISS_MODEL_PATH = "/tmp/trained"
 
-S3_TXT_PATH = 'transcripts';
-S3_MODEL_PATH = 'models'
+S3_TXT_PATH = "transcripts";
+S3_MODEL_PATH = "models"
 
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
-os.environ['TRANSFORMERS_CACHE'] = CACHE_DIR
+os.environ["TRANSFORMERS_CACHE"] = CACHE_DIR
 
-s3_client = boto3.client('s3')
+s3_client = boto3.client("s3")
 
 def local_filename(file):
-    print(file)
-    return CACHE_DIR + '/' + os.path.basename(file["path"])
+    return CACHE_DIR + "/" + os.path.basename(file["path"])
 
 def download_files(bucket, files):
     for file in files:
-        print(local_filename(file))
         s3_client.download_file(bucket, file["path"], local_filename(file))
 
 def train(text):
@@ -57,11 +54,11 @@ def train(text):
     db.save_local(FAISS_MODEL_PATH)
 
 def format_text(files):
-    text = ''
+    text = ""
     for file in files:
-        with open(local_filename(file), 'r') as file:
+        with open(local_filename(file), "r") as file:
             file_contents = file.read()
-            text = file_contents + ' '
+            text = file_contents + " "
     return text
 
 def upload_directory(path, bucket_name, s3_folder):
@@ -70,7 +67,7 @@ def upload_directory(path, bucket_name, s3_folder):
             s3_client.upload_file(os.path.join(root, file), bucket_name, os.path.join(s3_folder, file))
 
 def model_s3_foldername(model_id):
-    return S3_MODEL_PATH + '/' + model_id
+    return S3_MODEL_PATH + "/" + model_id
 
 def lambda_handler(event, context):
     body = json.loads(event["body"])
