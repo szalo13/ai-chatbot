@@ -14,8 +14,11 @@ task_family=$(stage)_ai_chatbot
 
 public_image_name = $(docker_repo)/$(image_name):$(version_tag)
 
+login:
+	AWS_PROFILE=$(company) aws ecr get-login-password --region $(default_region) | docker login --username AWS --password-stdin $(docker_repo)
+
 build-docker:
-	[[ "$(shell uname -m)" == "arm64" ]] && { make build-docker-arm64 || exit 1; } || make build-docker-x86
+	AWS_PROFILE=$(company) [[ "$(shell uname -m)" == "arm64" ]] && { make build-docker-arm64 || exit 1; } || make build-docker-x86
 
 build-docker-arm64:
 	echo [build-docker arm64] Building docker of api and publishing
