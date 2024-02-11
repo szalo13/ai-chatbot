@@ -11,6 +11,11 @@ export class ChatbotController {
     return this.chatbotService.create(newChatbot);
   }
 
+  @Get('/')
+  getAll(): any {
+    return this.chatbotService.findMany();
+  }
+
   @Get('/:publicId')
   get(@Param('publicId') publicId: string): any {
     return this.chatbotService.findByPublicId(publicId);

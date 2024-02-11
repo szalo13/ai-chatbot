@@ -13,4 +13,8 @@ export class DataSourceService {
   async create(newDatasource: INewDataSource) {
     return this.dataSourceRepository.create(newDatasource);
   }
+
+  async findAll() {
+    return this.dataSourceRepository.findAll();
+  }
 }

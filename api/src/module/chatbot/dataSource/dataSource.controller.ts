@@ -10,7 +10,13 @@ export class DataSourceController {
   ) {}
 
   @Get('/:publicId')
-  getChatbot(@Param('publicId') publicId: string): any {
+  async getDatasource(@Param('publicId') publicId: string) {
     return this.dataSourceService.findByPublicId(publicId);
+  }
+
+  @Get('/')
+  async getAllDatasources() {
+    console.log(await this.dataSourceService.findAll());
+    return this.dataSourceService.findAll();
   }
 }
