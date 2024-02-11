@@ -19,4 +19,8 @@ export class DataSourceRepository {
       where: { publicId },
     });
   }
+
+  async findAll() {
+    return await this.prisma.dataSource.findMany();
+  }
 }

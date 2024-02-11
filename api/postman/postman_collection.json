@@ -1,0 +1,164 @@
+{
+	"info": {
+		"_postman_id": "5cba0422-a772-4c0c-9cc1-7b0771180fdd",
+		"name": "AIChatbot",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9310454"
+	},
+	"item": [
+		{
+			"name": "Chatbot - Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"My first chatbot\",\n    \"status\": \"awaitingTraining\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/chatbot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"chatbot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Chatbot - Get",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"My first chatbot\",\n    \"status\": \"awaitingTraining\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/chatbot/b93e2beb-a3db-4213-bf22-517c2a27b0ad",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"chatbot",
+						"b93e2beb-a3db-4213-bf22-517c2a27b0ad"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Chatbot - Get many",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"My first chatbot\",\n    \"status\": \"awaitingTraining\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/chatbot/b93e2beb-a3db-4213-bf22-517c2a27b0ad",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"chatbot",
+						"b93e2beb-a3db-4213-bf22-517c2a27b0ad"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DataSource- Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"fileName\": \"\",\n    \"type\": \"text\",\n    \"modelId\": \"b93e2beb-a3db-4213-bf22-517c2a27b0ad\" \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/model/cef01a85-ae67-4bff-8124-6baf17095c1c/datasource",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"model",
+						"cef01a85-ae67-4bff-8124-6baf17095c1c",
+						"datasource"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DataSource - Get",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"My first chatbot\",\n    \"status\": \"awaitingTraining\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/chatbot/datasource",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"chatbot",
+						"datasource"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
