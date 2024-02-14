@@ -1,32 +1,60 @@
 // context/auth-context.js
-import { useUser } from "@auth0/nextjs-auth0/client";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { API_URL } from "../const";
+import { useSearchParams } from "next/navigation";
 
 interface AuthContextProps {
-  isAuthenticated: boolean;
-  user: any;
-  isLoading: boolean;
-  error: any;
+  authorized: boolean;
   login: () => void;
+  logout: () => void;
+  getToken: () => string | null;
 }
+
+const setToken = (token: string) => {
+  localStorage.setItem("accessToken", token);
+};
+
+const removeToken = () => {
+  localStorage.removeItem("accessToken");
+};
+
+const getToken = () => {
+  return localStorage.getItem("accessToken");
+};
 
 const AuthContext = createContext({} as AuthContextProps);
 
 export const AuthProvider = ({ children }: any) => {
-  const useUse = useUser();
-  console.log(useUse);
-  const { user, error, isLoading } = useUse;
-  const isAuthenticated = !!user;
+  const [authorized, setAuthorized] = useState(!!getToken());
+  const searchParams = useSearchParams();
 
   const login = async () => {
     window.location.href = `${API_URL}/auth/login`;
   };
 
+  const logout = () => {
+    removeToken();
+    setAuthorized(false);
+    login();
+  };
+
+  useEffect(() => {
+    const token = searchParams.get("accessToken") || getToken();
+
+    if (!token) {
+      login();
+    }
+
+    if (token) {
+      setToken(token);
+      setAuthorized(true);
+      // searchParams.delete();
+      return;
+    }
+  }, []);
+
   return (
-    <AuthContext.Provider
-      value={{ isAuthenticated, user, isLoading, error, login }}
-    >
+    <AuthContext.Provider value={{ login, getToken, logout, authorized }}>
       {children}
     </AuthContext.Provider>
   );

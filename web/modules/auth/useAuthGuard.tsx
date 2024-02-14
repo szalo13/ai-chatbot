@@ -1,15 +1,13 @@
 import { useEffect } from "react";
 import { useAuth } from "./auth.context";
-import { useRouter } from "next/navigation";
 
 export const useAuthGuard = () => {
-  const { isAuthenticated, isLoading, login } = useAuth();
-  const router = useRouter();
+  const { authorized, login } = useAuth();
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    if (!authorized) {
       // Redirect to the login page
-      // login();
+      login();
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [authorized]);
 };
