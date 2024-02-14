@@ -1,8 +1,10 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { DataSourceService } from './dataSource.service';
 import { DataSourceCreateHandler } from './handlers/dataSource.new.handler';
+import { JwtGuard } from '../../auth/jwt/jwt.guard';
 
 @Controller('/datasource')
+@UseGuards(JwtGuard)
 export class DataSourceController {
   constructor(
     private readonly dataSourceService: DataSourceService,
