@@ -24,13 +24,13 @@ model Chatbot {
 }
 
 model Model {
-  id               Int            @id @default(autoincrement())
-  publicId  String   @default(uuid()) @unique
+  id               Int             @id @default(autoincrement())
+  publicId         String          @default(uuid()) @unique
   status           ModelStatus
   dataSourceAssets DataSource[]
   chatbots         Chatbot[]
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
 
   @@index([publicId])
 }

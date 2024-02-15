@@ -1,3 +1,5 @@
+"use client";
+
 // context/auth-context.js
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { API_URL } from "../const";
@@ -25,7 +27,7 @@ const getToken = () => {
 const AuthContext = createContext({} as AuthContextProps);
 
 export const AuthProvider = ({ children }: any) => {
-  const [authorized, setAuthorized] = useState(!!getToken());
+  const [authorized, setAuthorized] = useState(true);
   const searchParams = useSearchParams();
 
   const login = async () => {

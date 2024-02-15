@@ -9,3 +9,8 @@ export interface INewChatbot {
   name: string;
   status: IModelStatus;
 }
+
+export interface IChatbot {
+  id: number;
+  name: string;
+}
