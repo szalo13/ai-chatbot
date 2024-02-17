@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { INewChatbot } from './chatbot.model';
+import { IModelStatus, INewChatbot } from './chatbot.model';
 import { ChatbotRepository } from './chatbot.repository';
 
 @Injectable()
@@ -7,7 +7,10 @@ export class ChatbotService {
   constructor(private readonly chatbotRepository: ChatbotRepository) {}
 
   create(data: INewChatbot) {
-    return this.chatbotRepository.create(data);
+    const defaultData = {
+      status: IModelStatus.notTrained,
+    };
+    return this.chatbotRepository.create({ ...defaultData, ...data });
   }
 
   findByPublicId(publicId: string) {

@@ -11,6 +11,25 @@ const CHATBOT_INCLUDE = {
     },
   },
 };
+
+const SINGLE_CHATBOT_INCLUDE = {
+  model: {
+    select: {
+      publicId: true,
+      status: true,
+      dataSourceAssets: {
+        select: {
+          publicId: true,
+          type: true,
+          fileName: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
+    },
+  },
+};
+
 @Injectable()
 export class ChatbotRepository {
   constructor(private prisma: PrismaService) {}
@@ -32,7 +51,7 @@ export class ChatbotRepository {
   async findByPublicId(publicId: string) {
     return await this.prisma.chatbot.findUnique({
       where: { publicId },
-      include: CHATBOT_INCLUDE,
+      include: SINGLE_CHATBOT_INCLUDE,
     });
   }
 

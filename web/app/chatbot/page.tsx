@@ -2,24 +2,28 @@
 
 import { useEffect } from "react";
 import { useChatbotList } from "../../modules/chatbot/hooks/useChatbotList";
-import ChatbotListElement from "../../modules/chatbot/components/ChatbotListElement";
+import CreateNewChatbotSectionComponent from "./components/CreateNewChatbotSection.component";
+import { useRouter } from "next/navigation";
 
 const ChatbotPage = () => {
-  const { chatbots, fetchChatbots } = useChatbotList();
+  const { chatbots, fetchChatbots, loaded } = useChatbotList();
+  const router = useRouter();
 
   useEffect(() => {
     fetchChatbots();
   }, []);
 
+  useEffect(() => {
+    if (chatbots.length) {
+      router.push(`/chatbot/${chatbots[0].publicId}`);
+    }
+  }, [chatbots, router]);
+
   return (
     <div>
-      {chatbots.map((chatbot: any) => (
-        <ChatbotListElement
-          key={chatbot.id}
-          name={chatbot.name}
-          description={"none"}
-        />
-      ))}
+      {loaded && !chatbots.length && (
+        <CreateNewChatbotSectionComponent onCreate={fetchChatbots} />
+      )}
     </div>
   );
 };

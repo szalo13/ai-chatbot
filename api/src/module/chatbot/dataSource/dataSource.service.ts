@@ -14,7 +14,7 @@ export class DataSourceService {
     return this.dataSourceRepository.create(newDatasource);
   }
 
-  async findAll() {
-    return this.dataSourceRepository.findAll();
+  async findAllByModelId(modelId: number) {
+    return this.dataSourceRepository.findAllByModelId(modelId);
   }
 }

@@ -10,11 +10,22 @@ import { DataSourceCreateHandler } from './dataSource/handlers/dataSource.new.ha
 import { ModelService } from './model/model.service';
 import { ModelRepository } from './model/model.repository';
 import { ModelController } from './model/model.controller';
+import { AwsModule } from '../aws/aws.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import chatbotConfig from './chatbot.config';
 
 @Module({
-  imports: [DBModule],
+  imports: [
+    DBModule,
+    AwsModule,
+    ConfigModule.forRoot({
+      load: [chatbotConfig],
+      envFilePath: `.env.${process.env.NODE_ENV}`,
+    }),
+  ],
   controllers: [ChatbotController, DataSourceController, ModelController],
   providers: [
+    ConfigService,
     ChatbotRepository,
     ChatbotService,
     DataSourceRepository,

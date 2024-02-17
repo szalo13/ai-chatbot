@@ -20,7 +20,7 @@ export class DataSourceRepository {
     });
   }
 
-  async findAll() {
-    return await this.prisma.dataSource.findMany();
+  async findAllByModelId(modelId: number) {
+    return await this.prisma.dataSource.findMany({ where: { modelId } });
   }
 }

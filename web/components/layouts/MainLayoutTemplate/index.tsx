@@ -20,8 +20,8 @@ const NAVIGATION = {
 
 const navigation = [
   { name: "Dashboard", href: NAVIGATION.DASHBOARD, icon: HomeIcon },
-  { name: "Links", href: NAVIGATION.CHATBOTS, icon: LinkIcon },
-  { name: "Bio", href: NAVIGATION.Datasources, icon: NewspaperIcon },
+  { name: "Chatbot", href: NAVIGATION.CHATBOTS, icon: LinkIcon },
+  { name: "Datasources", href: NAVIGATION.Datasources, icon: NewspaperIcon },
 ];
 const userNavigation = [
   { name: "Your Profile", href: "#" },

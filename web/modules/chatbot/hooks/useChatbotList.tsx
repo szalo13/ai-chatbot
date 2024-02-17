@@ -5,6 +5,7 @@ import { API_URL } from "../../../const/api";
 
 export const useChatbotList = () => {
   const authRequest = useAuthorizedRequest();
+  const [loaded, setLoaded] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [chatbots, setChatbots] = useState<IChatbot[]>([]);
 
@@ -13,6 +14,8 @@ export const useChatbotList = () => {
     try {
       const res = await authRequest.get(`${API_URL}/chatbot`);
       setChatbots(res.data);
+      setLoaded(true);
+      return res;
     } catch (error) {
       console.error(error);
       throw error;
@@ -20,5 +23,5 @@ export const useChatbotList = () => {
     setLoading(false);
   };
 
-  return { loading, chatbots, fetchChatbots };
+  return { loading, loaded, chatbots, fetchChatbots };
 };

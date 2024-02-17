@@ -1,4 +1,5 @@
 export enum IModelStatus {
+  notTrained = 'notTrained',
   AwaitingTraining = 'awaitingTraining',
   Pending = 'pending',
   Created = 'created',

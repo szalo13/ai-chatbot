@@ -2,8 +2,8 @@
 
 // context/auth-context.js
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { API_URL } from "../const";
 import { useSearchParams } from "next/navigation";
+import { API_URL } from "../../const/api";
 
 interface AuthContextProps {
   authorized: boolean;

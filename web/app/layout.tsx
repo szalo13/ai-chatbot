@@ -3,7 +3,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "../modules/auth/auth.context";
-import MainLayoutTemplate from "../components/layouts/MainLayoutTemplate";
+import { useEffect, useRef } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,9 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider>
-          <MainLayoutTemplate>{children}</MainLayoutTemplate>
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

@@ -26,3 +26,11 @@ body {
     text-wrap: balance;
   }
 }
+
+.title {
+  @apply text-4xl font-bold mb-2;
+}
+
+.description {
+  @apply text-base text-gray-600 mb-2;
+}
