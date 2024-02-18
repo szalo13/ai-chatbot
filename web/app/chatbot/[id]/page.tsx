@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useChatbotPage } from "./context";
 import { useChatbotRoutes } from "../../../modules/chatbot/hooks/useChatbotRoutes";
 import { IModelStatus } from "../../../modules/chatbot/model/model.model";
+import ChatbotWindow from "./components/ChatbotWindow";
 
 const ChatbotPage = () => {
   const { chatbot } = useChatbotPage();
@@ -16,7 +17,7 @@ const ChatbotPage = () => {
     }
   }, [chatbot, chatbotRoutes]);
 
-  return <div>chatbot page</div>;
+  return <ChatbotWindow />;
 };
 
 export default ChatbotPage;
