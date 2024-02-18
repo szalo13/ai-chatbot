@@ -21,6 +21,7 @@ const SINGLE_CHATBOT_INCLUDE = {
         select: {
           publicId: true,
           type: true,
+          name: true,
           fileName: true,
           createdAt: true,
           updatedAt: true,
@@ -41,6 +42,13 @@ export class ChatbotRepository {
         name: data.name,
         model: {
           create: {
+            dataSourceAssets: {
+              create: {
+                name: 'First data source',
+                type: 'text',
+                fileName: '',
+              },
+            },
             status: data.status,
           },
         },

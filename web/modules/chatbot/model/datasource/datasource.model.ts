@@ -11,6 +11,7 @@ export enum IDataSourceType {
 export interface IDataSource {
   publicId: string;
   type: IDataSourceType;
+  name: string;
   fileName: string;
   fileSize: number;
   updatedAt: string;

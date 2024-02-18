@@ -1,9 +1,13 @@
-import { memo } from "react";
-import { useChatbotChatWindow } from "./useChatbotChatWindow";
-import ChatWindow from "./ChatWindow/ChatWindow";
+import { useState } from "react";
 import { useModelRequests } from "../../../../modules/chatbot/model/hooks/useModelRequests";
 
-interface IChatbotChatWindowPropTypes {
+interface IMessage {
+  text: string;
+  type: "owner" | "responder";
+  imgSrc: string;
+}
+
+export interface IUseChatbotChatProps {
   modelPublicId: string;
 }
 
@@ -12,10 +16,14 @@ const BOT_IMG =
 const PERSON_IMG =
   "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80";
 
-const ChatbotChatWindow = ({ modelPublicId }: IChatbotChatWindowPropTypes) => {
+export const useChatbotChat = ({ modelPublicId }: IUseChatbotChatProps) => {
   const chatbotReq = useModelRequests();
-  const { responding, messages, addMessage, setResponding } =
-    useChatbotChatWindow();
+  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [responding, setResponding] = useState(false);
+
+  const addMessage = (message: IMessage) => {
+    setMessages((prev) => [...prev, message]);
+  };
 
   const handleSubmit = async (msg: string) => {
     setResponding(true);
@@ -37,13 +45,10 @@ const ChatbotChatWindow = ({ modelPublicId }: IChatbotChatWindowPropTypes) => {
     setResponding(false);
   };
 
-  return (
-    <ChatWindow
-      responding={responding}
-      messages={messages}
-      onSubmit={handleSubmit}
-    />
-  );
+  return {
+    messages,
+    responding,
+    addMessage,
+    handleSubmit,
+  };
 };
-
-export default memo(ChatbotChatWindow);

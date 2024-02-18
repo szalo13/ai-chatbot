@@ -38,6 +38,7 @@ model Model {
 model DataSource {
   id        Int        @id @default(autoincrement())
   publicId  String     @default(uuid()) @unique
+  name      String
   fileName  String
   type      DataSourceType
   modelId   Int

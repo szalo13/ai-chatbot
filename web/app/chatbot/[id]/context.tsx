@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -12,36 +13,26 @@ import { IChatbot } from "../../../modules/chatbot/chatbot.model";
 import { useChatbotRequests } from "../../../modules/chatbot/hooks/useChatbotRequests";
 import useRequest from "../../../hooks/useRequest";
 import { useParams } from "next/navigation";
+import {
+  IDataSource,
+  IDataSourceType,
+} from "../../../modules/chatbot/model/datasource/datasource.model";
+import { useChatbotRoutes } from "../../../modules/chatbot/hooks/useChatbotRoutes";
 
-interface ChatbotPageContextType {}
+interface ChatbotPageContextType {
+  loading: boolean;
+  loaded: boolean;
+  chatbot: IChatbot | null;
+}
 
 const ChatbotPageContext = createContext<ChatbotPageContextType | undefined>(
   undefined
 );
 
-export const ChatbotPageProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  return (
-    <ChatbotPageContext.Provider value={{}}>
-      {children}
-    </ChatbotPageContext.Provider>
-  );
-};
-
-/**
- * Custom hook to use the chatbot page context
- */
-export const useChatbotPage = () => {
+export const ChatbotPageProvider = ({ children }: { children: React.ReactNode }) => {
   const initialized = useRef(false);
-  const context = useContext(ChatbotPageContext);
-  if (context === undefined) {
-    throw new Error("useChatbotPage must be used within a ChatbotPageContext");
-  }
-
   const params = useParams();
+  const routes = useChatbotRoutes();
   const chatbotReq = useChatbotRequests();
   const [chatbot, setChatbot] = useState<IChatbot | null>(null);
   const { loading, loaded, sendRequest } = useRequest();
@@ -49,11 +40,11 @@ export const useChatbotPage = () => {
   const fetch = useCallback(
     async (publicId: string) => {
       const res = await sendRequest(chatbotReq.get(publicId));
-      if (res) {
-        setChatbot(res.data);
-      }
+      if (res?.data) return setChatbot(res.data);
+
+      routes.goToList();
     },
-    [chatbotReq, sendRequest, setChatbot]
+    [chatbotReq, sendRequest, setChatbot, routes]
   );
 
   useEffect(() => {
@@ -63,8 +54,42 @@ export const useChatbotPage = () => {
     fetch(params.id as string);
   }, [fetch, params.id]);
 
+  return (
+    <ChatbotPageContext.Provider value={{ chatbot, loading, loaded }}>
+      {children}
+    </ChatbotPageContext.Provider>
+  );
+};
+
+/**
+ * Custom hook to use the chatbot page context
+ */
+export const useChatbotPage = () => {
+  const context = useContext(ChatbotPageContext);
+  if (context === undefined) {
+    throw new Error("useChatbotPage must be used within a ChatbotPageContext");
+  }
+
+  const { chatbot, loading, loaded } = context;
+  const dataSources = useMemo(
+    () => chatbot?.model?.dataSourceAssets || [],
+    [chatbot]
+  );
+  const groupedDataSources = useMemo(() => {
+    const grouped: Record<IDataSourceType, IDataSource[]> = {
+      text: [],
+      pdf: [],
+    };
+
+    dataSources.forEach((dataSource) => {
+      grouped[dataSource.type].push(dataSource);
+    });
+    return grouped;
+  }, [dataSources]);
+
   return {
     chatbot,
+    groupedDataSources,
     loading,
     loaded,
     fetch,

@@ -34,6 +34,7 @@ export class DataSourceCreateHandler {
 
     const dataSource = await this.datasourceService.create({
       ...dto,
+      name: dto.name || '',
       modelId: model.id,
     });
 

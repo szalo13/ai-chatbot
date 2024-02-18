@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useChatbotPage } from "./context";
 import { useChatbotRoutes } from "../../../modules/chatbot/hooks/useChatbotRoutes";
 import { IModelStatus } from "../../../modules/chatbot/model/model.model";
-import ChatbotChatWindowComponent from "./ChatbotChatWindow/ChatbotChatWindow.component";
+import ChatbotChatWindowComponent from "./ChatbotChat/ChatbotChat.component";
 
 const ChatbotPage = () => {
   const { chatbot } = useChatbotPage();

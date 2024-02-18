@@ -5,6 +5,10 @@ import { useRouter } from "next/navigation";
 export const useChatbotRoutes = () => {
   const router = useRouter();
 
+  const goToList = () => {
+    router.push("/chatbot");
+  };
+
   const goToEdit = (publicId: string) => {
     router.push(`/chatbot/${publicId}/edit`);
   };
@@ -13,5 +17,5 @@ export const useChatbotRoutes = () => {
     router.push(`/chatbot/${publicId}`);
   };
 
-  return { goToEdit, goToDetails };
+  return { goToEdit, goToDetails, goToList };
 };
