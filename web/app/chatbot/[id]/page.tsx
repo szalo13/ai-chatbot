@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useChatbotPage } from "./context";
 import { useChatbotRoutes } from "../../../modules/chatbot/hooks/useChatbotRoutes";
 import { IModelStatus } from "../../../modules/chatbot/model/model.model";
-import ChatbotWindow from "./components/ChatbotWindow";
+import ChatbotChatWindowComponent from "./ChatbotChatWindow/ChatbotChatWindow.component";
 
 const ChatbotPage = () => {
   const { chatbot } = useChatbotPage();
@@ -17,7 +17,8 @@ const ChatbotPage = () => {
     }
   }, [chatbot, chatbotRoutes]);
 
-  return <ChatbotWindow />;
+  if (!chatbot) return null;
+  return <ChatbotChatWindowComponent modelPublicId={chatbot.model.publicId} />;
 };
 
 export default ChatbotPage;

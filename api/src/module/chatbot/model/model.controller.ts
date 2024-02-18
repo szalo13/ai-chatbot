@@ -5,6 +5,7 @@ import {
   HttpCode,
   Param,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { INewDataDTO } from '../dataSource/dataSource.model';
@@ -24,6 +25,15 @@ export class ModelController {
   @HttpCode(200)
   train(@Param('modelPublicId') modelPublicId: string): any {
     return this.modelService.trainModel(modelPublicId);
+  }
+
+  @Get('/:modelPublicId/question')
+  @HttpCode(200)
+  askQuestion(
+    @Param('modelPublicId') modelPublicId: string,
+    @Query('message') message: string,
+  ): any {
+    return this.modelService.askQuestion(modelPublicId, message);
   }
 
   @Post('/:modelPublicId/datasource')

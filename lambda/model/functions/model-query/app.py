@@ -45,12 +45,13 @@ def query_model(model_id, query):
 
     if " I don't know." == answear:
         print('no answear')
-    print(answear)
+        
+    return {
+        "answear": answear
+    }
 
 def download_files(bucket, model_id):
     ensure_dir(local_pathname(model_id))
-    print(s3_pathname(model_id) + "/index.pkl")
-    print(local_pathname(model_id) + "/index.pkl")
     s3_client.download_file(
         bucket,
         s3_pathname(model_id) + "/index.pkl",
@@ -69,4 +70,4 @@ def lambda_handler(event, context):
     query = body["query"]
 
     download_files(bucket, model_id)
-    query_model(model_id, query)
+    return query_model(model_id, query)

@@ -18,24 +18,16 @@ export class AwsLambdaService {
   }
 
   async invokeLambda(functionName: string, payload: any): Promise<any> {
-    try {
-      const command = new InvokeCommand({
-        FunctionName: functionName,
-        Payload: JSON.stringify({ body: JSON.stringify(payload) }),
-      });
-      const res = await this.lambdaClient.send(command);
-      const { Payload } = res;
-      const result = await new Uint8Array(Payload as ArrayBuffer);
-      const statusCode = res.$metadata.httpStatusCode;
+    const command = new InvokeCommand({
+      FunctionName: functionName,
+      Payload: JSON.stringify({ body: JSON.stringify(payload) }),
+    });
+    const res = await this.lambdaClient.send(command);
+    const { Payload } = res;
+    const result = await new Uint8Array(Payload as ArrayBuffer);
+    const statusCode = res.$metadata.httpStatusCode;
+    const data = Buffer.from(Payload).toString('utf-8');
 
-      return { result, statusCode, rawRes: res };
-    } catch (error) {
-      this.logger.error(
-        `Error invoking lambda: ${error.message}, ${JSON.stringify({
-          payload,
-        })}`,
-      );
-      throw error;
-    }
+    return { result, statusCode, data, rawRes: res };
   }
 }

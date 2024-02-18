@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { API_URL } from "../../../../const/api";
 import { useAuthorizedRequest } from "../../../auth/useAuthorizedRequest";
 
@@ -7,8 +8,17 @@ export const useModelRequests = () => {
   const authRequest = useAuthorizedRequest();
 
   const train = async (publicId: string) => {
-    authRequest.post(`${MODEL_URL}/${publicId}/train`, {});
+    return authRequest.post(`${MODEL_URL}/${publicId}/train`, {});
   };
 
-  return { train };
+  const askQuestion = async (
+    publicId: string,
+    message: string
+  ): Promise<AxiosResponse<any>> => {
+    return authRequest.get(
+      `${MODEL_URL}/${publicId}/question?message=${message}`
+    );
+  };
+
+  return { train, askQuestion };
 };

@@ -18,6 +18,12 @@ interface ITrainModel {
   files: ITrainModelFile[];
 }
 
+interface IQueryModelPayload {
+  bucket: string;
+  modelId: string;
+  query: string;
+}
+
 @Injectable()
 export class ModelService {
   protected readonly modelConfig: ModelConfig;
@@ -45,6 +51,22 @@ export class ModelService {
     const model = await this.findByPublicId(publicId);
     const datasources = await this.datasourceService.findAllByModelId(model.id);
     return datasources;
+  }
+
+  async askQuestion(publicId: string, msg: string) {
+    const model = await this.modelRepository.findByPublicId(publicId);
+    if (!model) throw new NotFoundException('Model not found');
+
+    const payload: IQueryModelPayload = {
+      bucket: this.chatbotConfig.uploadBucket,
+      modelId: model.publicId,
+      query: msg,
+    };
+    const res = await this.lambdaService.invokeLambda(
+      this.modelConfig.queryModelLambdaName,
+      payload,
+    );
+    return JSON.parse(res.data);
   }
 
   async trainModel(publicId: string) {

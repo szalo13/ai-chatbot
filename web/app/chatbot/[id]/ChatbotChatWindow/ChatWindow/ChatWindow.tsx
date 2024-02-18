@@ -1,12 +1,37 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import LoadingIndicator from "./components/LoadingIndicator";
 import Message from "./components/Message";
 
-interface IChatbotWindowPropTypes {
-  responding?: boolean;
+interface IMessage {
+  text: string;
+  type: "owner" | "responder";
+  imgSrc: string;
 }
 
-const ChatbotWindow = ({ responding }: IChatbotWindowPropTypes) => {
+interface IChatbotWindowPropTypes {
+  responding?: boolean;
+  messages: IMessage[];
+  onSubmit: (message: string) => void;
+}
+
+const ChatWindow = ({
+  responding,
+  messages,
+  onSubmit,
+}: IChatbotWindowPropTypes) => {
+  const [inputValue, setInputValue] = useState("");
+
+  const handleButtonClick = () => {
+    onSubmit(inputValue);
+    setInputValue("");
+  };
+
+  const hanldeFormSubmit = (e: any) => {
+    e.preventDefault();
+    onSubmit(inputValue);
+    setInputValue("");
+  };
+
   return (
     <div>
       <div className="flex-1 p:2 sm:p-6 justify-between flex flex-col h-full bg-white">
@@ -14,21 +39,9 @@ const ChatbotWindow = ({ responding }: IChatbotWindowPropTypes) => {
           id="messages"
           className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
         >
-          <Message
-            text="Hello, I am a chatbot. How can I help you today?"
-            type="responder"
-            imgSrc="https://cdn.icon-icons.com/icons2/1371/PNG/512/robot02_90810.png"
-          />
-          <Message
-            text="I am looking for a new car"
-            type="owner"
-            imgSrc="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-          />
-          <Message
-            text="What type of car are you looking for?"
-            type="responder"
-            imgSrc="https://cdn.icon-icons.com/icons2/1371/PNG/512/robot02_90810.png"
-          />
+          {messages.map((message) => (
+            <Message key={message.text} {...message} />
+          ))}
           <div>
             <div className="flex items-end">
               <div className="flex flex-col space-y-2 text-md leading-tight mx-2 order-2 items-start">
@@ -37,7 +50,10 @@ const ChatbotWindow = ({ responding }: IChatbotWindowPropTypes) => {
             </div>
           </div>
         </div>
-        <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
+        <form
+          onSubmit={hanldeFormSubmit}
+          className="block border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0"
+        >
           <div className="relative flex">
             <input
               type="text"
@@ -46,9 +62,12 @@ const ChatbotWindow = ({ responding }: IChatbotWindowPropTypes) => {
               autoFocus={true}
               className="text-md w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-5 pr-16 bg-gray-100 border-2 border-gray-200 focus:border-blue-500 rounded-full py-2"
               x-ref="input"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
             />
             <div className="absolute right-2 items-center inset-y-0 hidden sm:flex">
               <button
+                onClick={handleButtonClick}
                 type="button"
                 className="inline-flex items-center justify-center rounded-full h-8 w-8 transition duration-200 ease-in-out text-white bg-black hover:bg-gray-800 focus:outline-none"
               >
@@ -69,10 +88,10 @@ const ChatbotWindow = ({ responding }: IChatbotWindowPropTypes) => {
               </button>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
 };
 
-export default memo(ChatbotWindow);
+export default memo(ChatWindow);
