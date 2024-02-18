@@ -2,7 +2,11 @@
 
 import { useRef, useState } from "react";
 
-export const useFilePicker = () => {
+interface IUseFilePicker {
+  onFilesAdd?: (files: File[]) => void;
+}
+
+export const useFilePicker = ({ onFilesAdd }: IUseFilePicker) => {
   const fileInputRef = useRef(null);
   const [files, setFiles] = useState<File[]>([]);
 
@@ -25,7 +29,7 @@ export const useFilePicker = () => {
       }
     });
 
-    console.log("set files");
+    onFilesAdd && onFilesAdd(acceptedFiles);
     setFiles(acceptedFiles);
     if (notAcceptedFiles.length) {
       alert("Not all files are a PDF file.");

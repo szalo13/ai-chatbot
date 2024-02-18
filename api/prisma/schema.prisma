@@ -51,7 +51,7 @@ model DataSource {
 enum ModelStatus {
   notTrained
   awaitingTraining
-  pending
+  duringTraining
   created
   failed
 }

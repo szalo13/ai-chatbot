@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { IModelStatus, INewChatbot } from './chatbot.model';
+import { INewChatbot } from './chatbot.model';
 import { ChatbotRepository } from './chatbot.repository';
+import { ModelStatus } from '@prisma/client';
 
 @Injectable()
 export class ChatbotService {
@@ -8,7 +9,7 @@ export class ChatbotService {
 
   create(data: INewChatbot) {
     const defaultData = {
-      status: IModelStatus.notTrained,
+      status: ModelStatus.notTrained,
     };
     return this.chatbotRepository.create({ ...defaultData, ...data });
   }

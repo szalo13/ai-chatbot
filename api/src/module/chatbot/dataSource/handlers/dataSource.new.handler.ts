@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { IDataSource, IDataSourceType, INewDataDTO } from '../dataSource.model';
+import { IDataSource, INewDataDTO } from '../dataSource.model';
 import { DataSourceService } from '../dataSource.service';
 import { ModelService } from '../../model/model.service';
 import { AwsS3Service } from '../../../aws/aws.s3.service';
 import { ConfigService } from '@nestjs/config';
 import { ChatbotConfig } from '../../chatbot.config';
+import { DataSourceUtils } from '../dataSource.utils';
 
 interface ICreateDataSourceResult {
   dataSource: IDataSource;
@@ -38,7 +39,7 @@ export class DataSourceCreateHandler {
 
     return {
       uploadUrl: await this.s3Service.signPut({
-        Key: `pdf/${dataSource.id}`,
+        Key: DataSourceUtils.s3PdfPath(dataSource.publicId),
         Bucket: this.chatbotConfig.uploadBucket,
       }),
       dataSource,

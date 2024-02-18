@@ -1,1 +1,0 @@
-# Wordpress S3 assets storage bucket

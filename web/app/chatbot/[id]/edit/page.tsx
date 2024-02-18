@@ -8,21 +8,45 @@ import {
   IDataSource,
   IDataSourceType,
 } from "../../../../modules/chatbot/model/datasource/datasource.model";
+import { useChatbotEditPage } from "./context";
+import { useModelRequests } from "../../../../modules/chatbot/model/hooks/useModelRequests";
 
 const ChatbotEditPage = () => {
   const { chatbot } = useChatbotPage();
-  const filePicker = useFilePicker();
+  const modelReq = useModelRequests();
+  const chatbotEditPage = useChatbotEditPage();
+  const filePicker = useFilePicker({
+    onFilesAdd: (files: File[]) => {
+      chatbotEditPage.incrementRequestCount(files.length);
+    },
+  });
 
   if (!chatbot) return null;
 
-  const handleUploadEnd = (dataSource: IDataSource) => {
-    // TODO: Add logic
-    console.log(dataSource);
+  const handleUploadSuccess = (dataSource: IDataSource) => {
+    chatbotEditPage.decrementRequestCount();
+  };
+
+  const handleUploadFailed = () => {
+    chatbotEditPage.decrementRequestCount();
   };
 
   return (
     <form>
-      <h1 className="title">Edit chatbot</h1>
+      <div className="flex flex-row justify-between items-center">
+        <h1 className="title">Edit chatbot</h1>
+        <Button
+          variant="filled"
+          color={chatbotEditPage.canTrain ? "green" : "black"}
+          placeholder="Train"
+          disabled={!chatbotEditPage.canTrain}
+          onClick={() => {
+            modelReq.train(chatbot.model.publicId);
+          }}
+        >
+          Train
+        </Button>
+      </div>
       <p className="description">
         Add text or pdf files and train your chatbot to answear your questions
       </p>
@@ -34,10 +58,10 @@ const ChatbotEditPage = () => {
         ))}
       </div>
       {filePicker.files.map((file: File) => {
-        console.log("array render");
         return (
           <DataSourceUploadComponent
-            onUpload={handleUploadEnd}
+            onUploadSuccess={handleUploadSuccess}
+            onUploadFailed={handleUploadFailed}
             modelPublicId={chatbot.model.publicId}
             type={IDataSourceType.Pdf}
             file={file}

@@ -18,9 +18,6 @@ load_dotenv()
 CACHE_DIR = "/tmp"
 FAISS_MODEL_PATH = "/tmp/trained"
 
-S3_TXT_PATH = "transcripts";
-S3_MODEL_PATH = "models"
-
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 os.environ["TRANSFORMERS_CACHE"] = CACHE_DIR
 
@@ -66,17 +63,14 @@ def upload_directory(path, bucket_name, s3_folder):
         for file in files:
             s3_client.upload_file(os.path.join(root, file), bucket_name, os.path.join(s3_folder, file))
 
-def model_s3_foldername(model_id):
-    return S3_MODEL_PATH + "/" + model_id
-
 def lambda_handler(event, context):
     body = json.loads(event["body"])
     bucket = body["bucket"]
     files = body["files"]
-    model_id = body["modelId"]
+    model_output_path = body["modelOutputPath"]
 
     download_files(bucket, files)
     text = format_text(files)
     train(text)
-    upload_directory(FAISS_MODEL_PATH, bucket, model_s3_foldername(model_id))
+    upload_directory(FAISS_MODEL_PATH, bucket, model_output_path)
     

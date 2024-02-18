@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { INewDataDTO } from '../dataSource/dataSource.model';
 import { DataSourceCreateHandler } from '../dataSource/handlers/dataSource.new.handler';
 import { JwtGuard } from '../../auth/jwt/jwt.guard';
@@ -11,6 +19,12 @@ export class ModelController {
     private readonly modelService: ModelService,
     private readonly datasourceCreateHandler: DataSourceCreateHandler,
   ) {}
+
+  @Post('/:modelPublicId/train')
+  @HttpCode(200)
+  train(@Param('modelPublicId') modelPublicId: string): any {
+    return this.modelService.trainModel(modelPublicId);
+  }
 
   @Post('/:modelPublicId/datasource')
   create(

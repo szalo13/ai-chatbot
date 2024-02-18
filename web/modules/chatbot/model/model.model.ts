@@ -3,7 +3,7 @@ import { IDataSource } from "./datasource/datasource.model";
 export enum IModelStatus {
   notTrained = "notTrained",
   AwaitingTraining = "awaitingTraining",
-  Pending = "pending",
+  DuringTraining = "duringTraining",
   Created = "created",
   Failed = "failed",
 }

@@ -4,7 +4,13 @@ import json
 # Define the S3 event
 trigger_event = {
     "httpMethod": "POST",
-    "body": json.dumps({"bucket": "letsremote-dev-chatbot-storage", "modelId": "sample_model", "files": [{"path": "transcripts/sample.txt"}]})
+    "body": json.dumps({
+        "bucket": "letsremote-dev-chatbot-storage",
+        "modelOutputPath": "models/sample",
+        "files": [
+            {"path": "transcripts/sample.txt"}
+        ]
+    })
 }
 
 # If you need to copy to lambda test environment
