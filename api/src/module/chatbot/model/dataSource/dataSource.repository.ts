@@ -1,6 +1,6 @@
 // src/chatbot/chatbot.repository.ts
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../db/db.service';
+import { PrismaService } from '../../../db/db.service';
 import { INewDataSource } from './dataSource.model';
 
 @Injectable()

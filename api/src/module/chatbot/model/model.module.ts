@@ -4,14 +4,15 @@ import chatbotConfig from './model.config';
 import { DBModule } from '../../db/db.module';
 import { AwsModule } from '../../aws/aws.module';
 import { ModelController } from './model.controller';
-import { DataSourceRepository } from '../dataSource/dataSource.repository';
-import { DataSourceService } from '../dataSource/dataSource.service';
-import { DataSourceCreateHandler } from '../dataSource/handlers/dataSource.new.handler';
+import { DataSourceRepository } from './dataSource/dataSource.repository';
+import { DataSourceService } from './dataSource/dataSource.service';
+import { DataSourceCreateHandler } from './dataSource/handlers/dataSource.new.handler';
 import { ModelService } from './model.service';
 import { ModelRepository } from './model.repository';
-import { DataSourceUpdateHandlerFactory } from '../dataSource/handlers/update/factory';
-import { PdfDataSourceUpdateHandler } from '../dataSource/handlers/update/pdf';
-import { TextDataSourceUpdateHandler } from '../dataSource/handlers/update/text';
+import { DataSourceUpdateHandlerFactory } from './dataSource/handlers/update/factory';
+import { PdfDataSourceUpdateHandler } from './dataSource/handlers/update/pdf';
+import { TextDataSourceUpdateHandler } from './dataSource/handlers/update/text';
+import { DataSourceController } from './dataSource/dataSource.controller';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { TextDataSourceUpdateHandler } from '../dataSource/handlers/update/text'
     DataSourceService,
     DataSourceCreateHandler,
     DataSourceUpdateHandlerFactory,
+    DataSourceController,
     PdfDataSourceUpdateHandler,
     TextDataSourceUpdateHandler,
     ModelService,

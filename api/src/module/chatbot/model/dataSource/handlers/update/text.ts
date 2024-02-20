@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { IDataSource } from '../../dataSource.model';
 import { DataSourceUpdateHandler } from './base';
 import { DataSourceService } from '../../dataSource.service';
-import { AwsS3Service } from '../../../../aws/aws.s3.service';
+import { AwsS3Service } from '../../../../../aws/aws.s3.service';
 import { DataSourceUtils } from '../../dataSource.utils';
 import { ConfigService } from '@nestjs/config';
-import { ChatbotConfig } from '../../../chatbot.config';
+import { ChatbotConfig } from '../../../../chatbot.config';
 
 interface ITextUpdateData {
   text: string;

@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { DataSourceService } from './dataSource.service';
-import { JwtGuard } from '../../auth/jwt/jwt.guard';
+import { JwtGuard } from '../../../auth/jwt/jwt.guard';
 import { DataSourceUpdateHandlerFactory } from './handlers/update/factory';
 import { IDataSourceType } from './dataSource.model';
 

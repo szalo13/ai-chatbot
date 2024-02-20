@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { IDataSource, INewDataDTO } from '../dataSource.model';
 import { DataSourceService } from '../dataSource.service';
-import { ModelService } from '../../model/model.service';
-import { AwsS3Service } from '../../../aws/aws.s3.service';
+import { ModelService } from '../../model.service';
+import { AwsS3Service } from '../../../../aws/aws.s3.service';
 import { ConfigService } from '@nestjs/config';
-import { ChatbotConfig } from '../../chatbot.config';
+import { ChatbotConfig } from '../../../chatbot.config';
 import { DataSourceUtils } from '../dataSource.utils';
 
 interface ICreateDataSourceResult {

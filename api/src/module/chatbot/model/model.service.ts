@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ModelRepository } from './model.repository';
-import { DataSourceService } from '../dataSource/dataSource.service';
+import { DataSourceService } from './dataSource/dataSource.service';
 import { AwsLambdaService } from '../../aws/aws.lambda.service';
 import { ModelConfig } from './model.config';
 import { ConfigService } from '@nestjs/config';
 import { ChatbotConfig } from '../chatbot.config';
-import { DataSourceUtils } from '../dataSource/dataSource.utils';
+import { DataSourceUtils } from './dataSource/dataSource.utils';
 import { IModelStatus } from './model.model';
 
 interface ITrainModelFile {
