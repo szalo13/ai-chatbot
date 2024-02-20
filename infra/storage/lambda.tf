@@ -6,6 +6,12 @@ resource "aws_lambda_function" "pdf_handler_lambda" {
   memory_size = 1024
   timeout = 60
 
+  environment {
+    variables = {
+      "CHATBOT_SQS_BUS_URL" = aws_sqs_queue.chatbot_model_queue.url,
+    }
+  }
+
   image_config {
     command = ["transcript-create/app.lambda_handler"]
   }
@@ -18,6 +24,12 @@ resource "aws_lambda_function" "model_create_lambda" {
   image_uri = "098079051172.dkr.ecr.eu-central-1.amazonaws.com/letsremote_faiss_model_from_txt:db1be82a"
   memory_size = 1024
   timeout = 60
+
+  environment {
+    variables = {
+      "CHATBOT_SQS_BUS_URL" = aws_sqs_queue.chatbot_model_queue.url,
+    }
+  }
 
   image_config {
     command = ["model-create/app.lambda_handler"]

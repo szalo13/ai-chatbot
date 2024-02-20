@@ -1,4 +1,10 @@
 # test_lambda.py
+
+from dotenv import load_dotenv
+import os
+
+load_dotenv();
+
 from app import lambda_handler
 import json
 # Define the S3 event

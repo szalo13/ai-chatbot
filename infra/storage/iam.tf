@@ -51,6 +51,8 @@ resource "aws_iam_role_policy" "pdf_handler_lambda_policy" {
       },
       {
         Action = [
+          # Trigger SQS events
+          "sqs:SendMessage",
           // Permissions to get S3 access
           "s3:PutBucketPolicy",
           "s3:PutObject",
