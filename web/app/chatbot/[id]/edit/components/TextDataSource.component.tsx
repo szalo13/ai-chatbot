@@ -1,13 +1,24 @@
 import { memo, useState } from "react";
-import { IDataSource } from "../../../../../modules/chatbot/model/datasource/datasource.model";
+import {
+  IDataSource,
+  IDataSourceType,
+} from "../../../../../modules/chatbot/model/datasource/datasource.model";
 import { PrimaryButton } from "../../../../../components/layouts/MainLayoutTemplate/atoms/Button";
+import { useDatasourceRequests } from "../../../../../modules/chatbot/model/datasource/hooks/useDatasourceRequests";
 
 interface ITextDataSourcePropTypes {
   dataSource: IDataSource;
 }
 
 const TextDataSource = ({ dataSource }: ITextDataSourcePropTypes) => {
+  const datasourceReq = useDatasourceRequests();
   const [text, setText] = useState<string>("");
+
+  const handleSave = () => {
+    datasourceReq.update(dataSource.publicId, IDataSourceType.Text, {
+      text,
+    });
+  };
 
   return (
     <div>
@@ -33,7 +44,7 @@ const TextDataSource = ({ dataSource }: ITextDataSourcePropTypes) => {
           />
         </div>
         <div className="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
-          <PrimaryButton>Save</PrimaryButton>
+          <PrimaryButton onClick={handleSave}>Save</PrimaryButton>
         </div>
       </div>
     </div>

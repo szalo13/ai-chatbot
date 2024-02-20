@@ -1,17 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import chatbotConfig from './model.config';
 import { DBModule } from '../../db/db.module';
 import { AwsModule } from '../../aws/aws.module';
-import { ModelController } from './model.controller';
 import { DataSourceRepository } from '../dataSource/dataSource.repository';
 import { DataSourceService } from '../dataSource/dataSource.service';
 import { DataSourceCreateHandler } from '../dataSource/handlers/dataSource.new.handler';
-import { ModelService } from './model.service';
-import { ModelRepository } from './model.repository';
 import { DataSourceUpdateHandlerFactory } from '../dataSource/handlers/update/factory';
 import { PdfDataSourceUpdateHandler } from '../dataSource/handlers/update/pdf';
 import { TextDataSourceUpdateHandler } from '../dataSource/handlers/update/text';
+import chatbotConfig from '../chatbot.config';
 
 @Module({
   imports: [
@@ -22,7 +19,7 @@ import { TextDataSourceUpdateHandler } from '../dataSource/handlers/update/text'
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
   ],
-  controllers: [ModelController],
+  controllers: [],
   providers: [
     ConfigService,
     DataSourceRepository,
@@ -31,10 +28,7 @@ import { TextDataSourceUpdateHandler } from '../dataSource/handlers/update/text'
     DataSourceUpdateHandlerFactory,
     PdfDataSourceUpdateHandler,
     TextDataSourceUpdateHandler,
-    ModelService,
-    ModelController,
-    ModelRepository,
   ],
-  exports: [ModelService, DataSourceService, DataSourceUpdateHandlerFactory],
+  exports: [DataSourceService],
 })
-export class ModelModule {}
+export class DataSourceModule {}
