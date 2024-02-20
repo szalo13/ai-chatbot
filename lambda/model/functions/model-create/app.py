@@ -18,7 +18,7 @@ load_dotenv()
 CACHE_DIR = "/tmp"
 FAISS_MODEL_PATH = "/tmp/trained"
 CHATBOT_SQS_BUS_URL = os.getenv("CHATBOT_SQS_BUS_URL")
-SQS_EVENT_NAME = "model-train-result"
+SQS_EVENT_NAME = "model-created"
 
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 os.environ["TRANSFORMERS_CACHE"] = CACHE_DIR

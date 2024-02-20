@@ -6,23 +6,12 @@ import { ModelConfig } from './model.config';
 import { ConfigService } from '@nestjs/config';
 import { ChatbotConfig } from '../chatbot.config';
 import { DataSourceUtils } from './dataSource/dataSource.utils';
-import { IModelStatus } from './model.model';
-
-interface ITrainModelFile {
-  path: string;
-}
-
-interface ITrainModel {
-  modelOutputPath: string;
-  bucket: string;
-  files: ITrainModelFile[];
-}
-
-interface IQueryModelPayload {
-  bucket: string;
-  modelId: string;
-  query: string;
-}
+import {
+  IModelStatus,
+  IQueryModelPayload,
+  ITrainModelBody,
+} from './model.model';
+import { Model } from '@prisma/client';
 
 @Injectable()
 export class ModelService {
@@ -37,6 +26,10 @@ export class ModelService {
   ) {
     this.modelConfig = this.configService.get('model');
     this.chatbotConfig = this.configService.get('chatbot');
+  }
+
+  async updateById(id: number, data: Partial<Model>) {
+    return this.modelRepository.updateById(id, data);
   }
 
   async findByPublicIdWithDatasurces(publicId: string) {
@@ -73,7 +66,9 @@ export class ModelService {
     const model = await this.findByPublicIdWithDatasurces(publicId);
     if (!model) throw new NotFoundException('Model not found');
 
-    const payload: ITrainModel = {
+    const payload: ITrainModelBody = {
+      modelId: model.id,
+      modelPublicId: model.publicId,
       bucket: this.chatbotConfig.uploadBucket,
       modelOutputPath: DataSourceUtils.modelS3OutPath(model.publicId),
       files: model.dataSourceAssets.map((asset) => ({

@@ -6,9 +6,16 @@ import { ChatbotModule } from './module/chatbot/chatbot.module';
 import * as session from 'express-session';
 import { AuthModule } from './module/auth/auth.module';
 import { UserModule } from './module/user/user.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
-  imports: [DBModule, ChatbotModule, AuthModule, UserModule],
+  imports: [
+    DBModule,
+    ChatbotModule,
+    AuthModule,
+    UserModule,
+    ScheduleModule.forRoot(),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
