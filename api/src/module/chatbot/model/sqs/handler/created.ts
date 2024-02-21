@@ -3,10 +3,14 @@ import { ModelSQSHandler } from './base';
 import { ModelService } from '../../model.service';
 import { ITrainModelResult } from '../../model.model';
 import { ModelStatus } from '@prisma/client';
+import { ModelGateway } from '../../../model.gateway';
 
 @Injectable()
 export class ModelCreatedSQSHandler extends ModelSQSHandler {
-  constructor(private readonly modelService: ModelService) {
+  constructor(
+    private readonly modelService: ModelService,
+    private readonly modelGateway: ModelGateway,
+  ) {
     super();
   }
 
@@ -22,6 +26,6 @@ export class ModelCreatedSQSHandler extends ModelSQSHandler {
     const result = await this.modelService.updateById(data.body.modelId, {
       status: ModelStatus.created,
     });
-    console.log(result);
+    this.modelGateway.notifyModelTrained(data.body.modelPublicId, result);
   }
 }

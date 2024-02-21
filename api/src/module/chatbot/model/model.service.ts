@@ -12,6 +12,7 @@ import {
   ITrainModelBody,
 } from './model.model';
 import { Model } from '@prisma/client';
+import { ModelGateway } from '../model.gateway';
 
 @Injectable()
 export class ModelService {
@@ -20,6 +21,7 @@ export class ModelService {
 
   constructor(
     private readonly modelRepository: ModelRepository,
+    private readonly modelGateway: ModelGateway,
     private readonly datasourceService: DataSourceService,
     private readonly lambdaService: AwsLambdaService,
     private readonly configService: ConfigService,
@@ -75,10 +77,10 @@ export class ModelService {
         path: DataSourceUtils.transcriptS3Path(asset.publicId),
       })),
     };
-    await this.lambdaService.invokeLambda(
-      this.modelConfig.trainLambdaName,
-      payload,
-    );
+    // Do not wait for the lambda to finish
+    this.lambdaService.invokeLambda(this.modelConfig.trainLambdaName, payload);
+    console.log('Model training started');
+    this.modelGateway.notifyModelTrained(model.publicId, { model });
 
     const res = await this.modelRepository.updateById(model.id, {
       status: IModelStatus.DuringTraining,

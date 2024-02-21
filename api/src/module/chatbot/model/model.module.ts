@@ -14,6 +14,7 @@ import { PdfDataSourceUpdateHandler } from './dataSource/handlers/update/pdf';
 import { TextDataSourceUpdateHandler } from './dataSource/handlers/update/text';
 import { DataSourceController } from './dataSource/dataSource.controller';
 import { ModelSqsCronService } from './sqs/model.sqs.cron.service';
+import { ModelGateway } from '../model.gateway';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { ModelSqsCronService } from './sqs/model.sqs.cron.service';
     ModelController,
     ModelRepository,
     ModelSqsCronService,
+    ModelGateway,
   ],
   exports: [ModelService, DataSourceService, DataSourceUpdateHandlerFactory],
 })

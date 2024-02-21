@@ -13,3 +13,11 @@ export interface IChatbotModel {
   status: IModelStatus;
   dataSourceAssets: IDataSource[];
 }
+
+export enum ModelWebSocketEmitEvent {
+  SubscribeToModel = "model:subscribe",
+}
+
+export enum ModelWebSocketSubscribeEvent {
+  ModelTrained = "model:trained",
+}

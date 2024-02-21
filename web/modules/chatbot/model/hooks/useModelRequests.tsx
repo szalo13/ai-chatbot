@@ -1,8 +1,6 @@
 import { AxiosResponse } from "axios";
-import { API_URL } from "../../../../const/api";
 import { useAuthorizedRequest } from "../../../auth/useAuthorizedRequest";
-
-const MODEL_URL = `${API_URL}/model`;
+import { MODEL_URL } from "../model.const";
 
 export const useModelRequests = () => {
   const authRequest = useAuthorizedRequest();

@@ -29,3 +29,12 @@ export interface IQueryModelPayload {
   modelId: string;
   query: string;
 }
+
+export enum ModelWebSocketInputEvent {
+  SubscribeToModel = 'model:subscribe',
+}
+
+export enum ModelWebSocketOutputEvent {
+  ModelTrained = 'model:trained',
+  ModelTrainedFailed = 'model:trained-failed',
+}
