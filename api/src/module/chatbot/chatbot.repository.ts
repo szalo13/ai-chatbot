@@ -63,7 +63,7 @@ export class ChatbotRepository {
     });
   }
 
-  async findMany() {
+  async findManyByUserId() {
     return await this.prisma.chatbot.findMany({
       include: CHATBOT_INCLUDE,
     });

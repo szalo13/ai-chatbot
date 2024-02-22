@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { INewUser } from '../user/user.model';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -11,7 +12,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async registerOrUpdateUser(profile: INewUser): Promise<any> {
+  async registerOrUpdateUser(profile: INewUser): Promise<User> {
     // Extract relevant information from the profile
     const { name, email, auth0Id } = profile;
 

@@ -3,13 +3,20 @@ import { AuthService } from './auth.service';
 import { Auth0Guard } from './auth0/auth0.guard';
 import { JwtService } from '@nestjs/jwt';
 import { Auth0Profile } from './auth0/auth0.model';
+import { ConfigService } from '@nestjs/config';
+import { GlobalConfig } from '../../../app.config';
 
 @Controller('auth')
 export class AuthController {
+  appConfig: GlobalConfig;
+
   constructor(
     private readonly authService: AuthService,
     private readonly jwtService: JwtService,
-  ) {}
+    private readonly configService: ConfigService,
+  ) {
+    this.appConfig = this.configService.get('global');
+  }
 
   @Get('login')
   @UseGuards(Auth0Guard)
@@ -22,12 +29,7 @@ export class AuthController {
   async callback(@Req() req, @Res() res) {
     // Handle callback and redirect to the frontend with tokens
     const profile = req.user.profile as Auth0Profile;
-    const payload = { ...profile };
-    const token = this.jwtService.sign(payload, {
-      secret: process.env.JWT_SECRET_KEY,
-    });
-
-    this.authService.registerOrUpdateUser({
+    const user = await this.authService.registerOrUpdateUser({
       name: profile.displayName,
       email: profile.emails[0].value,
       auth0Id: profile.user_id,
@@ -35,8 +37,11 @@ export class AuthController {
       picture: profile.picture,
       locale: profile.locale,
     });
+    const token = this.jwtService.sign(user, {
+      secret: process.env.JWT_SECRET_KEY,
+    });
 
-    const redirectUrl = `http://localhost:4005/login/callback?accessToken=${token}`;
+    const redirectUrl = `${this.appConfig.appUrl}/login/callback?accessToken=${token}`;
     res.redirect(302, redirectUrl);
   }
 

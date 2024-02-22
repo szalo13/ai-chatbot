@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { INewDataDTO } from './dataSource/dataSource.model';
 import { DataSourceCreateHandler } from './dataSource/handlers/dataSource.new.handler';
-import { JwtGuard } from '../../auth/jwt/jwt.guard';
+import { JwtGuard } from '../../account/auth/jwt/jwt.guard';
 import { ModelService } from './model.service';
 
 @Controller('/model')

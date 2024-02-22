@@ -10,9 +10,13 @@ export const useChatbotRequests = () => {
     return authRequest.post(`${API_URL}/chatbot`, { name });
   };
 
+  const getList = async (): Promise<AxiosResponse<IChatbot[]>> => {
+    return authRequest.get(`${API_URL}/chatbot`);
+  };
+
   const get = async (publicId: string): Promise<AxiosResponse<IChatbot>> => {
     return authRequest.get(`${API_URL}/chatbot/${publicId}`);
   };
 
-  return { create, get };
+  return { create, get, getList };
 };

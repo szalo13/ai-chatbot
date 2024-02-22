@@ -1,7 +1,8 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ChatbotService } from './chatbot.service';
 import { INewChatbot } from './chatbot.model';
-import { JwtGuard } from '../auth/jwt/jwt.guard';
+import { JwtGuard } from '../account/auth/jwt/jwt.guard';
+import { GetJWTUser } from '../account/auth/jwt/get-jwt-user.decorator';
 
 @Controller('/chatbot')
 @UseGuards(JwtGuard)
@@ -14,8 +15,8 @@ export class ChatbotController {
   }
 
   @Get('/')
-  getAll(): any {
-    return this.chatbotService.findMany();
+  getAll(@GetJWTUser() user): any {
+    return this.chatbotService.findManyByUserId();
   }
 
   @Get('/:publicId')

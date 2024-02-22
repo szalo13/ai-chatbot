@@ -18,7 +18,7 @@ export class ChatbotService {
     return this.chatbotRepository.findByPublicId(publicId);
   }
 
-  findMany() {
-    return this.chatbotRepository.findMany();
+  findManyByUserId() {
+    // return this.chatbotRepository.findMany();
   }
 }

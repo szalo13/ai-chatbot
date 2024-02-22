@@ -4,18 +4,11 @@ import { AppService } from './app.service';
 import { DBModule } from './module/db/db.module';
 import { ChatbotModule } from './module/chatbot/chatbot.module';
 import * as session from 'express-session';
-import { AuthModule } from './module/auth/auth.module';
-import { UserModule } from './module/user/user.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { AccountModule } from './module/account/account.module';
 
 @Module({
-  imports: [
-    DBModule,
-    ChatbotModule,
-    AuthModule,
-    UserModule,
-    ScheduleModule.forRoot(),
-  ],
+  imports: [DBModule, ChatbotModule, ScheduleModule.forRoot(), AccountModule],
   controllers: [AppController],
   providers: [AppService],
 })

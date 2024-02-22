@@ -31,6 +31,11 @@ const ChatbotPage = () => {
       {loaded && !chatbots.length && (
         <CreateNewChatbotSectionComponent onCreate={handleChatbotCreated} />
       )}
+      {loaded &&
+        chatbots.length &&
+        chatbots.map((chatbot) => (
+          <div key={chatbot.publicId}>{chatbot.name}</div>
+        ))}
     </div>
   );
 };
