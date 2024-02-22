@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadGatewayException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { ModelRepository } from './model.repository';
 import { DataSourceService } from './dataSource/dataSource.service';
 import { AwsLambdaService } from '../../aws/aws.lambda.service';
@@ -16,6 +21,7 @@ import { ModelGateway } from '../model.gateway';
 
 @Injectable()
 export class ModelService {
+  protected readonly logger: Logger = new Logger(ModelService.name);
   protected readonly modelConfig: ModelConfig;
   protected readonly chatbotConfig: ChatbotConfig;
 
@@ -54,13 +60,17 @@ export class ModelService {
 
     const payload: IQueryModelPayload = {
       bucket: this.chatbotConfig.uploadBucket,
-      modelId: model.publicId,
+      modelId: String(model.id),
+      modelPublicId: model.publicId,
       query: msg,
     };
     const res = await this.lambdaService.invokeLambda(
       this.modelConfig.queryModelLambdaName,
       payload,
     );
+    const data = JSON.parse(res.data);
+    if (data.errorMessage) throw new Error(res.data);
+
     return JSON.parse(res.data);
   }
 
@@ -77,14 +87,17 @@ export class ModelService {
         path: DataSourceUtils.transcriptS3Path(asset.publicId),
       })),
     };
-    // Do not wait for the lambda to finish
-    this.lambdaService.invokeLambda(this.modelConfig.trainLambdaName, payload);
-    console.log('Model training started');
-    this.modelGateway.notifyModelTrained(model.publicId, { model });
 
+    this.logger.log('Training model', JSON.stringify({ payload }));
     const res = await this.modelRepository.updateById(model.id, {
       status: IModelStatus.DuringTraining,
     });
+    // Do not wait for the lambda to finish
+    this.lambdaService
+      .invokeLambda(this.modelConfig.trainLambdaName, payload)
+      .catch((err) => {
+        this.logger.error('Error invoking lambda', err);
+      });
     return { ...model, ...res };
   }
 }

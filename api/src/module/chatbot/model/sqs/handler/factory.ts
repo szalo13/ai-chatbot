@@ -19,6 +19,6 @@ export class ModelSQSHandlerFactory {
     const handler = this.handlers[eventName];
     if (!handler) throw new Error(`No handler found for event ${eventName}`);
 
-    return handler.handle(eventName, data);
+    return handler.handle(data);
   }
 }

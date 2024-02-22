@@ -1,16 +1,16 @@
 "use client";
 
 import { Button } from "@material-tailwind/react";
-import { useChatbotPage } from "../context";
-import { useChatbotEditPage } from "./context";
 import { useModelRequests } from "../../../../modules/chatbot/model/hooks/useModelRequests";
 import TextDataSourceComponent from "./components/TextDataSource.component";
 import UploadSectionComponent from "./sections/UploadSection.component";
+import { IModelStatus } from "../../../../modules/chatbot/model/model.model";
+import { useChatbotEditPage } from "./context";
 
 const ChatbotEditPage = () => {
-  const { chatbot, groupedDataSources } = useChatbotPage();
   const modelReq = useModelRequests();
   const chatbotEditPage = useChatbotEditPage();
+  const { chatbot, groupedDataSources, setModelStatus } = chatbotEditPage;
 
   if (!chatbot) return null;
 
@@ -21,9 +21,13 @@ const ChatbotEditPage = () => {
         <Button
           color={chatbotEditPage.canTrain ? "green" : "black"}
           placeholder="Train"
-          disabled={!chatbotEditPage.canTrain}
-          onClick={() => {
-            modelReq.train(chatbot.model.publicId);
+          disabled={
+            !chatbotEditPage.canTrain ||
+            chatbot.model.status === IModelStatus.DuringTraining
+          }
+          onClick={async () => {
+            setModelStatus(IModelStatus.DuringTraining);
+            await modelReq.train(chatbot.model.publicId);
           }}
         >
           Train

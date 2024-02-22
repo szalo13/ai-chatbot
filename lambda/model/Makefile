@@ -4,7 +4,8 @@ default_region=eu-central-1
 company=letsremote
 docker_repo=098079051172.dkr.ecr.eu-central-1.amazonaws.com
 image_name=$(company)_faiss_model_from_txt
-version_commit_hash = $(if ${CI},${CI_COMMIT_SHORT_SHA},$(shell git rev-parse --short=8 HEAD))
+version_commit_hash = latest
+# version_commit_hash = $(if ${CI},${CI_COMMIT_SHORT_SHA},$(shell git rev-parse --short=8 HEAD))
 version_tag = $(or ${VERSION}, $(version_commit_hash))
 stage = $(or ${STAGE}, dev)
 
@@ -22,7 +23,7 @@ build-docker:
 
 build-docker-arm64:
 	echo [build-docker arm64] Building docker of api and publishing
-	docker buildx build --platform linux/amd64,linux/arm64 --push -t $(public_image_name) .
+	docker buildx build --platform linux/arm64 --push -t $(public_image_name) .
 
 build-docker-x86:
 	echo [build-docker x86] Building docker of api

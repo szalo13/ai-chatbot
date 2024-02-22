@@ -15,6 +15,9 @@ import { TextDataSourceUpdateHandler } from './dataSource/handlers/update/text';
 import { DataSourceController } from './dataSource/dataSource.controller';
 import { ModelSqsCronService } from './sqs/model.sqs.cron.service';
 import { ModelGateway } from '../model.gateway';
+import { ModelSQSHandlerFactory } from './sqs/handler/factory';
+import { ModelCreatedSQSHandler } from './sqs/handler/created';
+import { ModelDatasourceTranscriptCreatedSQSHandler } from './sqs/handler/transcript-created';
 
 @Module({
   imports: [
@@ -40,6 +43,9 @@ import { ModelGateway } from '../model.gateway';
     ModelRepository,
     ModelSqsCronService,
     ModelGateway,
+    ModelSQSHandlerFactory,
+    ModelCreatedSQSHandler,
+    ModelDatasourceTranscriptCreatedSQSHandler,
   ],
   exports: [ModelService, DataSourceService, DataSourceUpdateHandlerFactory],
 })

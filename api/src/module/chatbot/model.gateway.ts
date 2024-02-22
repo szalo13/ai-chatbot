@@ -11,6 +11,7 @@ import {
   ModelWebSocketInputEvent,
   ModelWebSocketOutputEvent,
 } from './model/model.model';
+import { Logger } from '@nestjs/common';
 
 @WebSocketGateway({
   cors: {
@@ -19,6 +20,8 @@ import {
   },
 })
 export class ModelGateway {
+  logger = new Logger();
+
   @WebSocketServer()
   server: Server;
 
@@ -27,13 +30,15 @@ export class ModelGateway {
     @MessageBody() data: { modelPublicId: string },
     @ConnectedSocket() client: Socket,
   ): void {
-    console.log('subscribed to channel', data.modelPublicId);
     const { modelPublicId } = data;
     client.join(modelPublicId);
   }
 
   // Function to notify clients in a specific model room
   notifyModelTrained(modelPublicId: string, data: any): void {
+    this.logger.log(
+      `Notifying clients in room ${modelPublicId}, ${JSON.stringify(data)}`,
+    );
     this.server
       .to(modelPublicId)
       .emit(ModelWebSocketOutputEvent.ModelTrained, data);

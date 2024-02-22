@@ -1,6 +1,8 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
+import { useChatbotPage } from "../context";
+import { IModelStatus } from "../../../../modules/chatbot/model/model.model";
 
 interface ChatbotPageContextType {}
 
@@ -29,6 +31,8 @@ export const useChatbotEditPage = () => {
     throw new Error("useChatbotPage must be used within a ChatbotPageContext");
   }
 
+  const chatbotPage = useChatbotPage();
+  const { chatbot } = chatbotPage;
   const [uploadingDatasetCount, setUploadingDatasetCount] = useState(0);
 
   const incrementRequestCount = (num?: number) => {
@@ -40,10 +44,13 @@ export const useChatbotEditPage = () => {
   };
 
   return {
+    ...chatbotPage,
     incrementRequestCount,
     decrementRequestCount,
     uploadingDatasetCount,
     uploading: uploadingDatasetCount > 0,
-    canTrain: uploadingDatasetCount === 0,
+    canTrain:
+      uploadingDatasetCount === 0 &&
+      chatbot?.model.status !== IModelStatus.DuringTraining,
   };
 };

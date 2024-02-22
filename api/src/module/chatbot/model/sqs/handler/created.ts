@@ -22,7 +22,6 @@ export class ModelCreatedSQSHandler extends ModelSQSHandler {
 
   public async handle(data: ITrainModelResult): Promise<any> {
     if (!data.success) return this.handleError(data);
-
     const result = await this.modelService.updateById(data.body.modelId, {
       status: ModelStatus.created,
     });

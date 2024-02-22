@@ -27,6 +27,7 @@ export interface ITrainModelResult {
 export interface IQueryModelPayload {
   bucket: string;
   modelId: string;
+  modelPublicId: string;
   query: string;
 }
 
@@ -36,5 +37,4 @@ export enum ModelWebSocketInputEvent {
 
 export enum ModelWebSocketOutputEvent {
   ModelTrained = 'model:trained',
-  ModelTrainedFailed = 'model:trained-failed',
 }

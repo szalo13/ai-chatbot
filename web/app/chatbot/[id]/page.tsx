@@ -5,6 +5,7 @@ import { useChatbotPage } from "./context";
 import { useChatbotRoutes } from "../../../modules/chatbot/hooks/useChatbotRoutes";
 import { IModelStatus } from "../../../modules/chatbot/model/model.model";
 import ChatbotChatWindowComponent from "./ChatbotChat/ChatbotChat.component";
+import { PrimaryButton } from "../../../components/layouts/MainLayoutTemplate/atoms/Button";
 
 const ChatbotPage = () => {
   const { chatbot } = useChatbotPage();
@@ -18,7 +19,15 @@ const ChatbotPage = () => {
   }, [chatbot, chatbotRoutes]);
 
   if (!chatbot) return null;
-  return <ChatbotChatWindowComponent modelPublicId={chatbot.model.publicId} />;
+
+  return (
+    <div>
+      <PrimaryButton onClick={() => chatbotRoutes.goToEdit(chatbot.publicId)}>
+        Go to Edit
+      </PrimaryButton>
+      <ChatbotChatWindowComponent modelPublicId={chatbot.model.publicId} />
+    </div>
+  );
 };
 
 export default ChatbotPage;
