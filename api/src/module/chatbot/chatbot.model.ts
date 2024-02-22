@@ -1,11 +1,11 @@
-export enum IModelStatus {
-  AwaitingTraining = 'awaitingTraining',
-  Pending = 'pending',
-  Created = 'created',
-  Failed = 'failed',
-}
+import { ModelStatus } from '@prisma/client';
 
 export interface INewChatbot {
   name: string;
-  status: IModelStatus;
+  status: ModelStatus;
+}
+
+export interface IChatbot {
+  id: number;
+  name: string;
 }

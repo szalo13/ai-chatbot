@@ -52,6 +52,7 @@ resource "aws_iam_role_policy" "pdf_handler_lambda_policy" {
       {
         Action = [
           // Permissions to get S3 access
+          "s3:HeadObject",
           "s3:PutBucketPolicy",
           "s3:PutObject",
           "s3:GetObject",
@@ -63,6 +64,13 @@ resource "aws_iam_role_policy" "pdf_handler_lambda_policy" {
         Resource = "${aws_s3_bucket.assets_bucket.arn}/*",
         Effect   = "Allow",
       },
+      {
+        Action = [
+          "sqs:*",
+        ],
+        Resource = aws_sqs_queue.chatbot_model_queue.arn,
+        Effect   = "Allow",
+      }
     ],
   })
 }

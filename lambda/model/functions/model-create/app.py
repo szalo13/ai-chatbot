@@ -17,13 +17,14 @@ load_dotenv()
 
 CACHE_DIR = "/tmp"
 FAISS_MODEL_PATH = "/tmp/trained"
-
-S3_TXT_PATH = "transcripts";
-S3_MODEL_PATH = "models"
+CHATBOT_SQS_BUS_URL = os.getenv("CHATBOT_SQS_BUS_URL")
+AWS_REGION = os.getenv("AWS_REGION")
+SQS_EVENT_NAME = "model:created"
 
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 os.environ["TRANSFORMERS_CACHE"] = CACHE_DIR
 
+sqs_client = boto3.client('sqs', region_name=AWS_REGION)
 s3_client = boto3.client("s3")
 
 def local_filename(file):
@@ -66,17 +67,26 @@ def upload_directory(path, bucket_name, s3_folder):
         for file in files:
             s3_client.upload_file(os.path.join(root, file), bucket_name, os.path.join(s3_folder, file))
 
-def model_s3_foldername(model_id):
-    return S3_MODEL_PATH + "/" + model_id
+def trigger_processing_finished(payload):
+    sqs_client.send_message(
+        QueueUrl=CHATBOT_SQS_BUS_URL,
+        MessageBody=json.dumps(payload)
+    )
 
 def lambda_handler(event, context):
     body = json.loads(event["body"])
     bucket = body["bucket"]
     files = body["files"]
-    model_id = body["modelId"]
+    model_output_path = body["modelOutputPath"]
 
-    download_files(bucket, files)
-    text = format_text(files)
-    train(text)
-    upload_directory(FAISS_MODEL_PATH, bucket, model_s3_foldername(model_id))
+    try:
+        download_files(bucket, files)
+        text = format_text(files)
+        train(text)
+        upload_directory(FAISS_MODEL_PATH, bucket, model_output_path)
+        trigger_processing_finished({ "eventName": SQS_EVENT_NAME, "success": True, "body": body })
+
+    except Exception as e:
+        trigger_processing_finished({ "eventName": SQS_EVENT_NAME, "success": False, "error": str(e), "body": body })
+        raise e
     

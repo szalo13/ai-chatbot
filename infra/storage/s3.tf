@@ -8,6 +8,18 @@ resource "aws_s3_bucket" "assets_bucket" {
   }
 }
 
+resource "aws_s3_bucket_cors_configuration" "example" {
+  bucket = aws_s3_bucket.assets_bucket.id
+
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["PUT", "GET", "POST"]
+    allowed_origins = ["http://localhost:4005"]
+    expose_headers  = ["ETag"]
+    max_age_seconds = 3000
+  }
+}
+
 resource "aws_s3_bucket_ownership_controls" "assets_bucket" {
   bucket = aws_s3_bucket.assets_bucket.id
   rule {

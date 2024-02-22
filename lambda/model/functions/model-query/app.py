@@ -26,47 +26,51 @@ os.environ['TRANSFORMERS_CACHE'] = CACHE_DIR
 
 s3_client = boto3.client('s3')
 
-def s3_pathname(model_id):
-    return S3_MODEL_PATH + "/" + model_id
+def s3_pathname(model_public_id):
+    return S3_MODEL_PATH + "/" + model_public_id
 
-def local_pathname(model_id):
-    return CACHE_DIR + '/' + model_id
+def local_pathname(model_public_id):
+    return CACHE_DIR + '/' + model_public_id
 
 def ensure_dir(directory_path):
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
 
-def query_model(model_id, query):
+def query_model(model_public_id, query):
     embeddings = OpenAIEmbeddings()
-    db = FAISS.load_local(local_pathname(model_id), embeddings)
+    db = FAISS.load_local(local_pathname(model_public_id), embeddings)
     docs = db.similarity_search(query)
     chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
     answear = chain.run(input_documents=docs, question=query)
 
     if " I don't know." == answear:
         print('no answear')
-    print(answear)
+        
+    return {
+        "answear": answear
+    }
 
-def download_files(bucket, model_id):
-    ensure_dir(local_pathname(model_id))
-    print(s3_pathname(model_id) + "/index.pkl")
-    print(local_pathname(model_id) + "/index.pkl")
+def download_files(bucket, model_public_id):
+    ensure_dir(local_pathname(model_public_id))
     s3_client.download_file(
         bucket,
-        s3_pathname(model_id) + "/index.pkl",
-        local_pathname(model_id) + "/index.pkl"
+        s3_pathname(model_public_id) + "/index.pkl",
+        local_pathname(model_public_id) + "/index.pkl"
     )
     s3_client.download_file(
         bucket,
-        s3_pathname(model_id) + "/index.faiss",
-        local_pathname(model_id) + "/index.faiss"
+        s3_pathname(model_public_id) + "/index.faiss",
+        local_pathname(model_public_id) + "/index.faiss"
     )
 
 def lambda_handler(event, context):
     body = json.loads(event["body"])
     bucket = body["bucket"]
-    model_id = body["modelId"]
+    model_public_id = body["modelPublicId"]
     query = body["query"]
+    
+    print("Querying model: ")
+    print(event["body"])
 
-    download_files(bucket, model_id)
-    query_model(model_id, query)
+    download_files(bucket, model_public_id)
+    return query_model(model_public_id, query)
