@@ -27,7 +27,6 @@ export class ModelService {
 
   constructor(
     private readonly modelRepository: ModelRepository,
-    private readonly modelGateway: ModelGateway,
     private readonly datasourceService: DataSourceService,
     private readonly lambdaService: AwsLambdaService,
     private readonly configService: ConfigService,
@@ -42,6 +41,10 @@ export class ModelService {
 
   async findByPublicIdWithDatasurces(publicId: string) {
     return this.modelRepository.findByPublicIdWithDatasurces(publicId);
+  }
+
+  async findById(id: number) {
+    return this.modelRepository.findById(id);
   }
 
   async findByPublicId(publicId: string) {

@@ -12,6 +12,7 @@ import {
   ModelWebSocketOutputEvent,
 } from './model/model.model';
 import { Logger } from '@nestjs/common';
+import { IDataSource } from './model/dataSource/dataSource.model';
 
 @WebSocketGateway({
   cors: {
@@ -25,6 +26,18 @@ export class ModelGateway {
   @WebSocketServer()
   server: Server;
 
+  private logNotification(
+    modelPublicId: string,
+    eventName: string,
+    payload: any,
+  ) {
+    this.logger.log(
+      `Notifying clients in room ${modelPublicId} about ${eventName}, ${JSON.stringify(
+        payload,
+      )}`,
+    );
+  }
+
   @SubscribeMessage(ModelWebSocketInputEvent.SubscribeToModel)
   subscribeToModelChanges(
     @MessageBody() data: { modelPublicId: string },
@@ -36,11 +49,28 @@ export class ModelGateway {
 
   // Function to notify clients in a specific model room
   notifyModelTrained(modelPublicId: string, data: any): void {
-    this.logger.log(
-      `Notifying clients in room ${modelPublicId}, ${JSON.stringify(data)}`,
+    this.logNotification(
+      modelPublicId,
+      ModelWebSocketOutputEvent.ModelTrained,
+      data,
     );
     this.server
       .to(modelPublicId)
       .emit(ModelWebSocketOutputEvent.ModelTrained, data);
+  }
+
+  notifyDataSourceUpdated(
+    modelPublicId: string,
+    dataSource: IDataSource,
+  ): void {
+    const data = { dataSource };
+    this.logNotification(
+      modelPublicId,
+      ModelWebSocketOutputEvent.ModelTrained,
+      data,
+    );
+    this.server
+      .to(modelPublicId)
+      .emit(ModelWebSocketOutputEvent.ModelDataSourceUpdated, data);
   }
 }

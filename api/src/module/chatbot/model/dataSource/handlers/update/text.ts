@@ -25,12 +25,17 @@ export class TextDataSourceUpdateHandler extends DataSourceUpdateHandler {
     this.chatbotConfig = this.configService.get('chatbot');
   }
 
-  public update(publicId: string, data: ITextUpdateData): Promise<IDataSource> {
-    this.s3Service.upload({
+  public async update(
+    publicId: string,
+    data: ITextUpdateData,
+  ): Promise<IDataSource> {
+    await this.s3Service.upload({
       Key: DataSourceUtils.transcriptS3Path(publicId),
       Body: data.text,
       Bucket: this.chatbotConfig.uploadBucket,
     });
-    return this.dataSourceService.findByPublicId(publicId);
+    return await this.dataSourceService.updateByPublicId(publicId, {
+      transcriptCreated: true,
+    });
   }
 }

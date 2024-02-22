@@ -7,6 +7,12 @@ import { Model } from '@prisma/client';
 export class ModelRepository {
   constructor(private prisma: PrismaService) {}
 
+  async findById(id: number) {
+    return await this.prisma.model.findUnique({
+      where: { id },
+    });
+  }
+
   async findByPublicId(publicId: string) {
     return await this.prisma.model.findUnique({
       where: { publicId },

@@ -36,15 +36,16 @@ model Model {
 }
 
 model DataSource {
-  id        Int        @id @default(autoincrement())
-  publicId  String     @default(uuid()) @unique
-  name      String
-  fileName  String
-  type      DataSourceType
-  modelId   Int
-  model     Model      @relation(fields: [modelId], references: [id])
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id                    Int        @id @default(autoincrement())
+  publicId              String     @default(uuid()) @unique
+  name                  String
+  fileName              String
+  transcriptCreated     Boolean    @default(false)
+  type                  DataSourceType
+  modelId               Int
+  model                 Model      @relation(fields: [modelId], references: [id])
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
 
   @@index([publicId])
 }

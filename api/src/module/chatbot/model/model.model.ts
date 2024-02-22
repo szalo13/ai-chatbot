@@ -37,4 +37,5 @@ export enum ModelWebSocketInputEvent {
 
 export enum ModelWebSocketOutputEvent {
   ModelTrained = 'model:trained',
+  ModelDataSourceUpdated = 'model:datasource:updated',
 }
