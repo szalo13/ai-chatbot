@@ -7,9 +7,14 @@ import { UserModule } from '../user/user.module';
 import { JwtService } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt/jwt.strategy';
 import { ConfigService } from '@nestjs/config';
+import { OrganizationModule } from '../organization/organiation.module';
 
 @Module({
-  imports: [PassportModule.register({ session: true }), UserModule],
+  imports: [
+    PassportModule.register({ session: true }),
+    UserModule,
+    OrganizationModule,
+  ],
   providers: [
     AuthService,
     Auth0Strategy,

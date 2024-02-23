@@ -12,25 +12,29 @@ datasource db {
 
 // ChatBot Module
 model Chatbot {
-  id        Int      @id @default(autoincrement())
-  publicId  String   @default(uuid()) @unique
-  name      String
-  modelId   Int
-  model     Model    @relation(fields: [modelId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                    Int      @id @default(autoincrement())
+  publicId              String   @default(uuid()) @unique
+  name                  String
+  modelId               Int
+  model                 Model    @relation(fields: [modelId], references: [id])
+  organizationId        Int          // Foreign key
+  organization          Organization @relation(fields: [organizationId], references: [id]) // Relation to Organization
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
 
   @@index([publicId])
 }
 
 model Model {
-  id               Int             @id @default(autoincrement())
-  publicId         String          @default(uuid()) @unique
-  status           ModelStatus     @default(notTrained)
-  dataSourceAssets DataSource[]
-  chatbots         Chatbot[]
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
+  id                    Int             @id @default(autoincrement())
+  publicId              String          @default(uuid()) @unique
+  status                ModelStatus     @default(notTrained)
+  dataSourceAssets      DataSource[]
+  chatbots              Chatbot[]
+  organizationId        Int          // Foreign key
+  organization          Organization @relation(fields: [organizationId], references: [id]) // Relation to Organization
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
 
   @@index([publicId])
 }
@@ -50,6 +54,30 @@ model DataSource {
   @@index([publicId])
 }
 
+model User {
+  id                Int      @id @default(autoincrement())
+  publicId          String   @default(uuid()) @unique
+  auth0Id           String   @unique
+  email             String   @unique
+  name              String
+  locale            String
+  picture           String
+  provider          String
+  organizationId    Int      
+  organization      Organization @relation(fields: [organizationId], references: [id]) // Relation to Organization
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Organization {
+  id                Int       @id @default(autoincrement())
+  publicId          String    @default(uuid()) @unique
+  name              String
+  users             User[]    // One-to-many relationship with User
+  chatbots          Chatbot[] // One-to-many relationship with Chatbot
+  models            Model[]   // One-to-many relationship with Model
+}
+
 enum ModelStatus {
   notTrained
   awaitingTraining
@@ -61,17 +89,4 @@ enum ModelStatus {
 enum DataSourceType {
   text
   pdf
-}
-
-model User {
-  id        Int      @id @default(autoincrement())
-  publicId  String   @default(uuid()) @unique
-  auth0Id   String   @unique
-  email     String   @unique
-  name      String
-  locale    String
-  picture   String
-  provider  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }

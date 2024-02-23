@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../db/db.service';
 import { INewChatbot } from './chatbot.model';
 
-const CHATBOT_INCLUDE = {
+const CHATBOT_LIST_INCLUDE = {
   model: {
     select: {
       publicId: true,
@@ -35,13 +35,20 @@ const SINGLE_CHATBOT_INCLUDE = {
 export class ChatbotRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: INewChatbot) {
+  async createWithModelAndDatasource(
+    organizationId: number,
+    data: INewChatbot,
+  ) {
     // Create a new chatbot with a default model
     return await this.prisma.chatbot.create({
       data: {
         name: data.name,
+        organization: { connect: { id: organizationId } },
         model: {
           create: {
+            organizationId: organizationId,
+            // Assuming 'status' and 'dataSourceAssets' are valid fields for 'Model'
+            status: data.status,
             dataSourceAssets: {
               create: {
                 name: 'First data source',
@@ -49,7 +56,6 @@ export class ChatbotRepository {
                 fileName: '',
               },
             },
-            status: data.status,
           },
         },
       },
@@ -63,9 +69,10 @@ export class ChatbotRepository {
     });
   }
 
-  async findManyByUserId() {
+  async findManyByOrganizationId(organizationId: number) {
     return await this.prisma.chatbot.findMany({
-      include: CHATBOT_INCLUDE,
+      where: { organizationId },
+      include: CHATBOT_LIST_INCLUDE,
     });
   }
 }

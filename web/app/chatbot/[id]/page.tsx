@@ -25,7 +25,9 @@ const ChatbotPage = () => {
       <PrimaryButton onClick={() => chatbotRoutes.goToEdit(chatbot.publicId)}>
         Go to Edit
       </PrimaryButton>
-      <ChatbotChatWindowComponent modelPublicId={chatbot.model.publicId} />
+      <div className="h-96 bg-gray-50 sm:p-4 rounded-md mt-4">
+        <ChatbotChatWindowComponent modelPublicId={chatbot.model.publicId} />
+      </div>
     </div>
   );
 };
