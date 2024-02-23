@@ -14,14 +14,12 @@ import Sidebar from "./molecules/Sidebar";
 const NAVIGATION = {
   DASHBOARD: "/dashboard",
   CHATBOTS: "/chatbot",
-  Datasources: "/source",
   LOGOUT: "/logout",
 };
 
 const navigation = [
   { name: "Dashboard", href: NAVIGATION.DASHBOARD, icon: HomeIcon },
   { name: "Chatbot", href: NAVIGATION.CHATBOTS, icon: LinkIcon },
-  { name: "Datasources", href: NAVIGATION.Datasources, icon: NewspaperIcon },
 ];
 const userNavigation = [
   { name: "Your Profile", href: "#" },
