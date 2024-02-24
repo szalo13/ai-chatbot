@@ -4,7 +4,6 @@
 
 import json
 import os
-import textract
 import boto3
 
 from dotenv import load_dotenv
@@ -20,11 +19,16 @@ CACHE_DIR = '/tmp'
 
 S3_TXT_PATH = 'transcripts';
 S3_MODEL_PATH = 'models'
-
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
-os.environ['TRANSFORMERS_CACHE'] = CACHE_DIR
+ENV = os.getenv("ENV")
+AWS_REGION = os.getenv("REGION")
+OPEN_API_SECRET_NAME = ENV + "-open-api-key"
 
 s3_client = boto3.client('s3')
+secret_client = boto3.client('secretsmanager', region_name=AWS_REGION)
+
+os.environ["OPENAI_API_KEY"] = secret_client.get_secret_value(SecretId=OPEN_API_SECRET_NAME)['SecretString']
+os.environ['TRANSFORMERS_CACHE'] = CACHE_DIR
+
 
 def s3_pathname(model_public_id):
     return S3_MODEL_PATH + "/" + model_public_id

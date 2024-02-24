@@ -12,19 +12,21 @@ import { INewDataDTO } from './dataSource/dataSource.model';
 import { DataSourceCreateHandler } from './dataSource/handlers/dataSource.new.handler';
 import { JwtGuard } from '../../account/auth/jwt/jwt.guard';
 import { ModelService } from './model.service';
+import { TrainModelHandler } from './handlers/train-model.handler';
 
 @Controller('/model')
 @UseGuards(JwtGuard)
 export class ModelController {
   constructor(
     private readonly modelService: ModelService,
+    private readonly trainModelHandler: TrainModelHandler,
     private readonly datasourceCreateHandler: DataSourceCreateHandler,
   ) {}
 
   @Post('/:modelPublicId/train')
   @HttpCode(200)
   train(@Param('modelPublicId') modelPublicId: string): any {
-    return this.modelService.trainModel(modelPublicId);
+    return this.trainModelHandler.trainModel(modelPublicId);
   }
 
   @Get('/:modelPublicId/question')

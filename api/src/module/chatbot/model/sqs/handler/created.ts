@@ -15,9 +15,10 @@ export class ModelCreatedSQSHandler extends ModelSQSHandler {
   }
 
   public async handleError(data: ITrainModelResult): Promise<any> {
-    await this.modelService.updateById(data.body.modelId, {
+    const result = await this.modelService.updateById(data.body.modelId, {
       status: ModelStatus.FAILED,
     });
+    this.modelGateway.notifyModelTrained(data.body.modelPublicId, result);
   }
 
   public async handle(data: ITrainModelResult): Promise<any> {

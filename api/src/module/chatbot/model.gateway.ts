@@ -66,7 +66,7 @@ export class ModelGateway {
     const data = { dataSource };
     this.logNotification(
       modelPublicId,
-      ModelWebSocketOutputEvent.ModelTrained,
+      ModelWebSocketOutputEvent.ModelDataSourceUpdated,
       data,
     );
     this.server

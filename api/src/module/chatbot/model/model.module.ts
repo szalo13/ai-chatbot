@@ -18,6 +18,7 @@ import { ModelGateway } from '../model.gateway';
 import { ModelSQSHandlerFactory } from './sqs/handler/factory';
 import { ModelCreatedSQSHandler } from './sqs/handler/created';
 import { ModelDatasourceTranscriptCreatedSQSHandler } from './sqs/handler/transcript-created';
+import { TrainModelHandler } from './handlers/train-model.handler';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { ModelDatasourceTranscriptCreatedSQSHandler } from './sqs/handler/transc
     ModelSQSHandlerFactory,
     ModelCreatedSQSHandler,
     ModelDatasourceTranscriptCreatedSQSHandler,
+    TrainModelHandler,
   ],
   exports: [ModelService, DataSourceService, DataSourceUpdateHandlerFactory],
 })

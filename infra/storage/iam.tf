@@ -70,6 +70,13 @@ resource "aws_iam_role_policy" "pdf_handler_lambda_policy" {
         ],
         Resource = aws_sqs_queue.chatbot_model_queue.arn,
         Effect   = "Allow",
+      },
+      {
+        Action = [
+          "secretsmanager:GetSecretValue",
+        ],
+        Resource = aws_secretsmanager_secret.open_api_key.arn,
+        Effect   = "Allow",
       }
     ],
   })

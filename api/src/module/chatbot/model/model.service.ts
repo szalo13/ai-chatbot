@@ -1,23 +1,12 @@
-import {
-  BadGatewayException,
-  Injectable,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { ModelRepository } from './model.repository';
 import { DataSourceService } from './dataSource/dataSource.service';
 import { AwsLambdaService } from '../../aws/aws.lambda.service';
 import { ModelConfig } from './model.config';
 import { ConfigService } from '@nestjs/config';
 import { ChatbotConfig } from '../chatbot.config';
-import { DataSourceUtils } from './dataSource/dataSource.utils';
-import {
-  IModelStatus,
-  IQueryModelPayload,
-  ITrainModelBody,
-} from './model.model';
+import { IQueryModelPayload } from './model.model';
 import { Model } from '@prisma/client';
-import { ModelGateway } from '../model.gateway';
 
 @Injectable()
 export class ModelService {
@@ -75,32 +64,5 @@ export class ModelService {
     if (data.errorMessage) throw new Error(res.data);
 
     return JSON.parse(res.data);
-  }
-
-  async trainModel(publicId: string) {
-    const model = await this.findByPublicIdWithDatasurces(publicId);
-    if (!model) throw new NotFoundException('Model not found');
-
-    const payload: ITrainModelBody = {
-      modelId: model.id,
-      modelPublicId: model.publicId,
-      bucket: this.chatbotConfig.uploadBucket,
-      modelOutputPath: DataSourceUtils.modelS3OutPath(model.publicId),
-      files: model.dataSourceAssets.map((asset) => ({
-        path: DataSourceUtils.transcriptS3Path(asset.publicId),
-      })),
-    };
-
-    this.logger.log('Training model', JSON.stringify({ payload }));
-    const res = await this.modelRepository.updateById(model.id, {
-      status: IModelStatus.DURING_TRAINING,
-    });
-    // Do not wait for the lambda to finish
-    this.lambdaService
-      .invokeLambda(this.modelConfig.trainLambdaName, payload)
-      .catch((err) => {
-        this.logger.error('Error invoking lambda', err);
-      });
-    return { ...model, ...res };
   }
 }

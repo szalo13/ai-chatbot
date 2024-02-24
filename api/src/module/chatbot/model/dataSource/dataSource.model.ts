@@ -12,6 +12,7 @@ export interface IDataSource {
   type: IDataSourceType;
   name: string;
   fileName: string;
+  transcriptCreated: boolean;
   updatedAt: Date;
   createdAt: Date;
 }

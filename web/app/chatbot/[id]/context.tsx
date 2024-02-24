@@ -109,13 +109,13 @@ export const useChatbotPage = () => {
     [chatbot]
   );
   const groupedDataSources = useMemo(() => {
-    const grouped: Record<IDataSourceType, IDataSource[]> = {
+    const grouped: Record<string, IDataSource[]> = {
       text: [],
       pdf: [],
     };
 
     dataSources.forEach((dataSource) => {
-      grouped[dataSource.type].push(dataSource);
+      grouped[dataSource.type.toLocaleLowerCase()].push(dataSource);
     });
     return grouped;
   }, [dataSources]);
