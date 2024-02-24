@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE "Model" ALTER COLUMN "status" SET DEFAULT 'notTrained';
+ALTER TABLE "Model" ALTER COLUMN "status" SET DEFAULT 'NOT_TRAINED';

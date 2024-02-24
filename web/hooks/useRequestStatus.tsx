@@ -3,14 +3,14 @@ import { useState } from "react";
 const DEFAULT_STATUS = {
   loading: false,
   loaded: false,
-  failed: false,
+  FAILED: false,
   error: null,
 };
 
 interface IRequestStatus {
   loading: boolean;
   loaded: boolean;
-  failed: boolean;
+  FAILED: boolean;
   error: any;
 }
 
@@ -41,7 +41,7 @@ export const useRequestStatus = () => {
     setStatus((prevStatus) => ({
       ...prevStatus,
       loading: false,
-      failed: true,
+      FAILED: true,
       error,
     }));
   };

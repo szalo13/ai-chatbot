@@ -10,7 +10,7 @@ export class ChatbotService {
 
   create(user: IUser, data: INewChatbot) {
     const defaultData = {
-      status: ModelStatus.notTrained,
+      status: ModelStatus.NOT_TRAINED,
     };
     return this.chatbotRepository.createWithModelAndDatasource(
       user.organization.id,

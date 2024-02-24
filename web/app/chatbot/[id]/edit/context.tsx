@@ -51,6 +51,6 @@ export const useChatbotEditPage = () => {
     uploading: uploadingDatasetCount > 0,
     canTrain:
       uploadingDatasetCount === 0 &&
-      chatbot?.model.status !== IModelStatus.DuringTraining,
+      chatbot?.model.status !== IModelStatus.DURING_TRAINING,
   };
 };

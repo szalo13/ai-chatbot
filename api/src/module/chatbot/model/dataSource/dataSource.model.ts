@@ -1,4 +1,5 @@
-export type IDataSourceType = 'text' | 'pdf';
+export type IDataSourceType = 'TEXT' | 'PDF';
+
 export interface INewDataSource {
   fileName: string;
   type: IDataSourceType;

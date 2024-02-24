@@ -93,7 +93,7 @@ export class ModelService {
 
     this.logger.log('Training model', JSON.stringify({ payload }));
     const res = await this.modelRepository.updateById(model.id, {
-      status: IModelStatus.DuringTraining,
+      status: IModelStatus.DURING_TRAINING,
     });
     // Do not wait for the lambda to finish
     this.lambdaService

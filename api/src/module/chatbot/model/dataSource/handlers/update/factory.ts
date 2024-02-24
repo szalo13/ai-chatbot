@@ -12,8 +12,8 @@ export class DataSourceUpdateHandlerFactory {
   ) {}
 
   private handlers: Record<IDataSourceType, DataSourceUpdateHandler> = {
-    text: this.textDataSourceUpdateHandler,
-    pdf: this.pdfDataSourceUpdateHandler,
+    ['TEXT']: this.textDataSourceUpdateHandler,
+    ['PDF']: this.pdfDataSourceUpdateHandler,
   };
 
   public update(

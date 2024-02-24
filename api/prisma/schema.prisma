@@ -13,11 +13,12 @@ datasource db {
 // ChatBot Module
 model Chatbot {
   id                    Int      @id @default(autoincrement())
+  chats                 Chat[]   // Relation to chats initiated by this chatbot
   publicId              String   @default(uuid()) @unique
   name                  String
   modelId               Int
   model                 Model    @relation(fields: [modelId], references: [id])
-  organizationId        Int          // Foreign key
+  organizationId        Int      // Foreign key
   organization          Organization @relation(fields: [organizationId], references: [id]) // Relation to Organization
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
@@ -25,10 +26,35 @@ model Chatbot {
   @@index([publicId])
 }
 
+model Chat {
+  id                    Int       @id @default(autoincrement())
+  clientId              String    @unique
+  chatbotId             Int       // Reference to the Chatbot
+  chatbot               Chatbot   @relation(fields: [chatbotId], references: [id])
+  status                ChatStatus
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  messages              Message[] // Relation to messages within this chat
+}
+
+enum ChatStatus {
+  BOT
+  ESCALATED
+}
+
+model Message {
+  id                    Int      @id @default(autoincrement())
+  chatId                Int      // Reference to the Chat
+  chat                  Chat     @relation(fields: [chatId], references: [id])
+  content               String
+  senderType            String  // 'bot', 'client', 'member'
+  createdAt             DateTime @default(now())
+}
+
 model Model {
   id                    Int             @id @default(autoincrement())
   publicId              String          @default(uuid()) @unique
-  status                ModelStatus     @default(notTrained)
+  status                ModelStatus     @default(NOT_TRAINED)
   dataSourceAssets      DataSource[]
   chatbots              Chatbot[]
   organizationId        Int          // Foreign key
@@ -79,14 +105,14 @@ model Organization {
 }
 
 enum ModelStatus {
-  notTrained
-  awaitingTraining
-  duringTraining
-  created
-  failed
+  NOT_TRAINED
+  AWAITING_TRAINING
+  DURING_TRAINING
+  CREATED
+  FAILED
 }
 
 enum DataSourceType {
-  text
-  pdf
+  TEXT
+  PDF
 }

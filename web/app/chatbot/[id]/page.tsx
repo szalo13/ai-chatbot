@@ -13,7 +13,7 @@ const ChatbotPage = () => {
 
   useEffect(() => {
     // Change page to edit if chatbot is not trained
-    if (chatbot && chatbot.model.status === IModelStatus.notTrained) {
+    if (chatbot && chatbot.model.status === IModelStatus.NOT_TRAINED) {
       chatbotRoutes.goToEdit(chatbot.publicId);
     }
   }, [chatbot, chatbotRoutes]);

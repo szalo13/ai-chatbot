@@ -1,2 +1,2 @@
 -- AlterEnum
-ALTER TYPE "ModelStatus" ADD VALUE 'notTrained';
+ALTER TYPE "ModelStatus" ADD VALUE 'NOT_TRAINED';

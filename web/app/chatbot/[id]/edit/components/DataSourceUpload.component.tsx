@@ -20,7 +20,7 @@ interface IProps {
   type: IDataSourceType;
   file: File;
   onUploadSuccess: (dataSource: IDataSource) => void;
-  onUploadFailed: () => void;
+  onUploadFAILED: () => void;
 }
 
 const uploadFile = async (file: File, presignedUrl: string) => {
@@ -37,7 +37,7 @@ const createAndUpload = async (
   request: IUseRequestStatus,
   datasourceReq: IDataSourceRequests
 ) => {
-  const { file, modelPublicId, type, onUploadSuccess, onUploadFailed } = props;
+  const { file, modelPublicId, type, onUploadSuccess, onUploadFAILED } = props;
   try {
     request.init();
     const { data } = await datasourceReq.create(modelPublicId, {
@@ -48,7 +48,7 @@ const createAndUpload = async (
     request.success();
     onUploadSuccess(data.dataSource);
   } catch (error) {
-    onUploadFailed();
+    onUploadFAILED();
     request?.fail(error);
   }
 };
@@ -59,7 +59,7 @@ const DataSourceUpload = (props: IProps) => {
   const datasourceReq = useDatasourceRequests();
 
   useEffect(() => {
-    if (!request.loading && !request.loaded && !request.failed) {
+    if (!request.loading && !request.loaded && !request.FAILED) {
       console.log("uploading");
       createAndUpload(props, request, datasourceReq);
     }

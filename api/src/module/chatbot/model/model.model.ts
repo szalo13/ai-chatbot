@@ -1,9 +1,9 @@
 export enum IModelStatus {
-  NotTrained = 'notTrained',
-  AwaitingTraining = 'awaitingTraining',
-  DuringTraining = 'duringTraining',
-  Created = 'created',
-  Failed = 'failed',
+  NOT_TRAINED = 'NOT_TRAINED',
+  AWAITING_TRAINING = 'AWAITING_TRAINING',
+  DURING_TRAINING = 'DURING_TRAINING',
+  CREATED = 'CREATED',
+  FAILED = 'FAILED',
 }
 
 export interface ITrainModelFile {

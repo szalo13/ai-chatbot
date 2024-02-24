@@ -52,7 +52,7 @@ export class ChatbotRepository {
             dataSourceAssets: {
               create: {
                 name: 'First data source',
-                type: 'text',
+                type: 'TEXT',
                 fileName: '',
               },
             },

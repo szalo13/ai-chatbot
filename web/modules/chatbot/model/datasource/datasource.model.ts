@@ -4,8 +4,8 @@ export interface INewDataSource {
 }
 
 export enum IDataSourceType {
-  Text = "text",
-  Pdf = "pdf",
+  Text = "TEXT",
+  Pdf = "PDF",
 }
 
 export interface IDataSource {
