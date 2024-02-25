@@ -7,12 +7,14 @@ import { AwsModule } from '../aws/aws.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import chatbotConfig from './chatbot.config';
 import { ModelModule } from './model/model.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
     DBModule,
     AwsModule,
     ModelModule,
+    ChatModule,
     ConfigModule.forRoot({
       load: [chatbotConfig],
       envFilePath: `.env.${process.env.NODE_ENV}`,
