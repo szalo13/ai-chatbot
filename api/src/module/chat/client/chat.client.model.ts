@@ -1,39 +1,73 @@
-import { BaseView } from '../../shared/View';
+import { IsString, IsEnum, validateOrReject } from 'class-validator';
+import { Transform, plainToClass } from 'class-transformer';
 
 export interface INewClientChat {
   chatbotPublicId: string;
+}
+
+export interface IChlientChatbotModelView {
+  publicId: string;
+}
+
+export interface IClientChatbotView {
+  publicId: string;
+  model: IChlientChatbotModelView;
 }
 
 export interface IClientChatView {
   status: string;
   chatbot: {
     publicId: string;
-    model: {
-      publicId: string;
-    };
   };
 }
 
-export class ClientChatView extends BaseView<IClientChatView> {
-  constructor(data: IClientChatView) {
-    super(data);
+export class ClientChatbotModelView {
+  @IsString()
+  publicId: string;
 
-    this.validateRequiredFields([
-      this.data.status,
-      this.data.chatbot.publicId,
-      this.data.chatbot.model.publicId,
-    ]);
-  }
-
-  toView(): IClientChatView {
+  async toValidatedView(): Promise<IChlientChatbotModelView> {
+    await validateOrReject(this);
     return {
-      status: this.data.status,
-      chatbot: {
-        publicId: this.data.chatbot.publicId,
-        model: {
-          publicId: this.data.chatbot.model.publicId,
-        },
-      },
+      publicId: this.publicId,
+    };
+  }
+}
+
+export class ClientChatbotView {
+  @IsString()
+  publicId: string;
+
+  @Transform(({ value }) => plainToClass(ClientChatbotModelView, value))
+  model: ClientChatbotModelView;
+
+  async toValidatedView(): Promise<IClientChatbotView> {
+    await validateOrReject(this);
+    return {
+      publicId: this.publicId,
+      model: await plainToClass(
+        ClientChatbotModelView,
+        this.model,
+      ).toValidatedView(),
+    };
+  }
+}
+
+export class ClientChatView {
+  @Transform(({ value }) => value.toString())
+  @IsEnum(['BOT', 'HUMAN'])
+  status: string;
+
+  @Transform(({ value }) => plainToClass(ClientChatbotView, value))
+  chatbot: ClientChatbotView;
+
+  async toValidatedView(): Promise<IClientChatView> {
+    await validateOrReject(this);
+    return {
+      status: this.status,
+      chatbot: await plainToClass(
+        ClientChatbotView,
+        this.chatbot,
+      ).toValidatedView(),
     };
   }
 }

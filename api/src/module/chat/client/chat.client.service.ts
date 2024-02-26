@@ -8,6 +8,8 @@ import {
 import { ChatStatus } from '../chat.model';
 import { v4 as uuidv4 } from 'uuid';
 import { ChatbotService } from '../chatbot/chatbot.service';
+import { plainToClass } from 'class-transformer';
+import { validateOrReject } from 'class-validator';
 
 @Injectable()
 export class ChatClientService {
@@ -24,7 +26,7 @@ export class ChatClientService {
     );
     if (!chat) throw new Error('Chat not found');
 
-    return new ClientChatView(chat).toView();
+    return plainToClass(ClientChatView, chat).toValidatedView();
   }
 
   async create(chatInput: INewClientChat): Promise<IClientChatView> {
@@ -41,6 +43,6 @@ export class ChatClientService {
         ChatStatus.BOT,
         chatbot.id,
       );
-    return new ClientChatView(newChatEntity).toView();
+    return plainToClass(ClientChatView, newChatEntity).toValidatedView();
   }
 }
