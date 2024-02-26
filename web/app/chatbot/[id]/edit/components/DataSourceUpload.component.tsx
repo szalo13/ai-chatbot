@@ -60,7 +60,6 @@ const DataSourceUpload = (props: IProps) => {
 
   useEffect(() => {
     if (!request.loading && !request.loaded && !request.FAILED) {
-      console.log("uploading");
       createAndUpload(props, request, datasourceReq);
     }
   }, [request, props, datasourceReq]);

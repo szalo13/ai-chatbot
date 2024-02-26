@@ -75,7 +75,6 @@ export const createWebSocketContext = ({
         const init = async () => {
           // Connect to the websocket
           emitEvents.forEach((event: EmitEvent) => {
-            console.log({ event });
             socket.emit(event.eventName, event.data);
           });
 
@@ -99,7 +98,6 @@ export const createWebSocketContext = ({
           });
         };
 
-        console.log({ trigger, prevTrigger: prevTrigger.current });
         if (trigger !== prevTrigger.current || !prevTrigger.current) {
           prevTrigger.current = trigger;
           deactive();
