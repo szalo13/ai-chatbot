@@ -9,7 +9,6 @@ import { ChatStatus } from '../chat.model';
 import { v4 as uuidv4 } from 'uuid';
 import { ChatbotService } from '../chatbot/chatbot.service';
 import { plainToClass } from 'class-transformer';
-import { validateOrReject } from 'class-validator';
 
 @Injectable()
 export class ChatClientService {

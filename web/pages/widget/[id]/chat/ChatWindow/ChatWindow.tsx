@@ -5,7 +5,7 @@ import SendIcon from "./components/SendIcon.svg";
 
 interface IMessage {
   text: string;
-  type: "owner" | "responder";
+  type: "owner" | "responder" | "bot";
   imgSrc: string;
 }
 

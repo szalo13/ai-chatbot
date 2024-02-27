@@ -14,8 +14,17 @@ export interface IClientChatbotView {
   model: IChlientChatbotModelView;
 }
 
+export interface IMessageClientView {
+  publicId: string;
+  content: string;
+  senderType: string;
+  createdAt: string;
+}
+
 export interface IClientChatView {
+  clientId: string;
   status: string;
+  messages: IMessageClientView[];
   chatbot: {
     publicId: string;
   };
@@ -52,7 +61,34 @@ export class ClientChatbotView {
   }
 }
 
+export class ChatMessageClientView {
+  @IsString()
+  publicId: string;
+
+  @IsString()
+  content: string;
+
+  @IsEnum(['BOT', 'HUMAN'])
+  senderType: string;
+
+  @IsString()
+  createdAt: string;
+
+  async toValidatedView(): Promise<IMessageClientView> {
+    await validateOrReject(this);
+    return {
+      publicId: this.publicId,
+      content: this.content,
+      senderType: this.senderType,
+      createdAt: this.createdAt,
+    };
+  }
+}
+
 export class ClientChatView {
+  @IsString()
+  clientId: string;
+
   @Transform(({ value }) => value.toString())
   @IsEnum(['BOT', 'HUMAN'])
   status: string;
@@ -60,10 +96,17 @@ export class ClientChatView {
   @Transform(({ value }) => plainToClass(ClientChatbotView, value))
   chatbot: ClientChatbotView;
 
+  @Transform(({ value }) => {
+    return value.map((msg) => plainToClass(ChatMessageClientView, msg));
+  })
+  messages: ChatMessageClientView[];
+
   async toValidatedView(): Promise<IClientChatView> {
     await validateOrReject(this);
     return {
+      clientId: this.clientId,
       status: this.status,
+      messages: await this.messages.map((msg) => msg.toValidatedView()),
       chatbot: await plainToClass(
         ClientChatbotView,
         this.chatbot,

@@ -14,6 +14,13 @@ const CLIENT_VIEW_INCLUDE = {
       },
     },
   },
+  messages: {
+    select: {
+      content: true,
+      senderType: true,
+      createdAt: true,
+    },
+  },
 };
 
 @Injectable()

@@ -44,6 +44,7 @@ enum ChatStatus {
 
 model Message {
   id                    Int      @id @default(autoincrement())
+  publicId              String   @default(uuid()) @unique
   chatId                Int      // Reference to the Chat
   chat                  Chat     @relation(fields: [chatId], references: [id])
   content               String
