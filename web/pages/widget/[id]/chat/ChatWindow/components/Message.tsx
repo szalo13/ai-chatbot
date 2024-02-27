@@ -30,7 +30,9 @@ const Message = ({ text, type, imgSrc }: IMessagePropTypes) => {
             <span className="px-4 py-3 rounded-xl inline-block">{text}</span>
           </div>
         </div>
-        <img src={imgSrc} alt="" className="w-6 h-6 rounded-full" />
+        {!!imgSrc && (
+          <img src={imgSrc} alt="" className="w-6 h-6 rounded-full" />
+        )}
       </div>
     </div>
   );
