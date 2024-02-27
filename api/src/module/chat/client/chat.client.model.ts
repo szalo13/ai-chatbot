@@ -1,5 +1,10 @@
 import { IsString, IsEnum, validateOrReject } from 'class-validator';
 import { Transform, plainToClass } from 'class-transformer';
+import {
+  ChatMessageClientView,
+  IMessageClientView,
+} from './message/message.client.model';
+import { ChatStatus } from '../chat.model';
 
 export interface INewClientChat {
   chatbotPublicId: string;
@@ -14,16 +19,9 @@ export interface IClientChatbotView {
   model: IChlientChatbotModelView;
 }
 
-export interface IMessageClientView {
-  publicId: string;
-  content: string;
-  senderType: string;
-  createdAt: string;
-}
-
 export interface IClientChatView {
   clientId: string;
-  status: string;
+  status: ChatStatus;
   messages: IMessageClientView[];
   chatbot: {
     publicId: string;
@@ -61,30 +59,6 @@ export class ClientChatbotView {
   }
 }
 
-export class ChatMessageClientView {
-  @IsString()
-  publicId: string;
-
-  @IsString()
-  content: string;
-
-  @IsEnum(['BOT', 'HUMAN'])
-  senderType: string;
-
-  @IsString()
-  createdAt: string;
-
-  async toValidatedView(): Promise<IMessageClientView> {
-    await validateOrReject(this);
-    return {
-      publicId: this.publicId,
-      content: this.content,
-      senderType: this.senderType,
-      createdAt: this.createdAt,
-    };
-  }
-}
-
 export class ClientChatView {
   @IsString()
   clientId: string;
@@ -103,14 +77,19 @@ export class ClientChatView {
 
   async toValidatedView(): Promise<IClientChatView> {
     await validateOrReject(this);
+
+    const [messages, chatbot] = await Promise.all([
+      await Promise.all([
+        ...this.messages.map(async (msg) => msg.toValidatedView()),
+      ]),
+      await plainToClass(ClientChatbotView, this.chatbot).toValidatedView(),
+    ]);
+
     return {
       clientId: this.clientId,
       status: this.status,
-      messages: await this.messages.map((msg) => msg.toValidatedView()),
-      chatbot: await plainToClass(
-        ClientChatbotView,
-        this.chatbot,
-      ).toValidatedView(),
+      messages,
+      chatbot,
     };
   }
 }

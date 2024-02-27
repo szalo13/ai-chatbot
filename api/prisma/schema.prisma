@@ -42,13 +42,19 @@ enum ChatStatus {
   ESCALATED
 }
 
+enum MessageSenderType {
+  BOT
+  CLIENT
+  MEMBER
+}
+
 model Message {
   id                    Int      @id @default(autoincrement())
   publicId              String   @default(uuid()) @unique
   chatId                Int      // Reference to the Chat
   chat                  Chat     @relation(fields: [chatId], references: [id])
   content               String
-  senderType            String  // 'bot', 'client', 'member'
+  senderType            MessageSenderType
   createdAt             DateTime @default(now())
 }
 
