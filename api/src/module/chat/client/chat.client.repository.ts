@@ -16,6 +16,7 @@ const CLIENT_VIEW_INCLUDE = {
   },
   messages: {
     select: {
+      publicId: true,
       content: true,
       senderType: true,
       createdAt: true,

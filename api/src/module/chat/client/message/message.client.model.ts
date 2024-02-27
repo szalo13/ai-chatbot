@@ -1,4 +1,4 @@
-import { IsEnum, IsString, validateOrReject } from 'class-validator';
+import { IsDate, IsEnum, IsString, validateOrReject } from 'class-validator';
 import { MessageSenderType } from '../../message/message.model';
 import { Transform, plainToClass } from 'class-transformer';
 
@@ -21,10 +21,10 @@ export class ChatMessageClientView {
   @IsString()
   content: string;
 
-  @IsEnum(Object.entries(MessageSenderType))
+  @IsEnum(['BOT', 'CLIENT', 'MEMBER'])
   senderType: MessageSenderType;
 
-  @IsString()
+  @IsDate()
   createdAt: string;
 
   async toValidatedView(): Promise<IMessageClientView> {

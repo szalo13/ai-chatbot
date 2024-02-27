@@ -5,7 +5,7 @@ import {
   IClientChatView,
   INewClientChat,
 } from './chat.client.model';
-import { ChatStatus } from '../chat.model';
+import { ChatStatus } from '../chat/chat.model';
 import { v4 as uuidv4 } from 'uuid';
 import { ChatbotService } from '../chatbot/chatbot.service';
 import { plainToClass } from 'class-transformer';
@@ -23,6 +23,7 @@ export class ChatClientService {
     const chat = await this.chatRepository.findByClientIdForClientView(
       clientId,
     );
+
     if (!chat) throw new Error('Chat not found');
 
     return plainToClass(ClientChatView, chat).toValidatedView();

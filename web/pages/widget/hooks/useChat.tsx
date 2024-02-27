@@ -4,6 +4,7 @@ const CLIENT_ID_KEY_NAME = "lra:chatbot-client-id";
 
 export const useChat = () => {
   const getClientId = () => {
+    if (!localStorage) return null;
     return localStorage.getItem(CLIENT_ID_KEY_NAME);
   };
 

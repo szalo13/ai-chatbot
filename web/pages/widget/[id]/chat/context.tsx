@@ -4,9 +4,9 @@ import { useParams } from "next/navigation";
 import useRequest from "../../../../hooks/useRequest";
 import { useGetOrCreateChat } from "../../hooks/useGetOrCreateChat";
 import { IClientChatView } from "../../chat.model";
-import { useChatMessage } from "../../hooks/useChatMessage";
 
 export type ChatWidgetContextType = {
+  chatbotPublicId: string;
   chat?: IClientChatView;
   loading: boolean;
   loaded: boolean;
@@ -17,6 +17,7 @@ export type ChatWidgetContextType = {
  * Context
  */
 const ChatWidgetContext = createContext<ChatWidgetContextType>({
+  chatbotPublicId: "",
   chat: undefined,
   loading: false,
   loaded: false,
@@ -44,7 +45,9 @@ export const ChatWidgetProvider = ({ children }: any) => {
   }, [chatbotPublicId, getOrCreateChat, loaded, sendRequest]);
 
   return (
-    <ChatWidgetContext.Provider value={{ chat, loading, loaded, setChat }}>
+    <ChatWidgetContext.Provider
+      value={{ chatbotPublicId, chat, loading, loaded, setChat }}
+    >
       {children}
     </ChatWidgetContext.Provider>
   );
@@ -55,26 +58,13 @@ export const ChatWidgetProvider = ({ children }: any) => {
  */
 export const useChatWidget = () => {
   const ctx = useContext(ChatWidgetContext);
-  const message = useChatMessage();
-  const { chat, loading, loaded, setChat } = ctx;
-
-  const createMessage = async (messageText: string) => {
-    if (!chat) return;
-    const newMsg = await message.sendMessage(chat.clientId, messageText);
-
-    if (newMsg) {
-      setChat({
-        ...chat,
-        messages: [...chat.messages, newMsg],
-      });
-    }
-  };
+  const { chat, loading, loaded, chatbotPublicId } = ctx;
 
   return {
+    chatbotPublicId,
     chat,
     messages: chat?.messages || [],
     loading,
     loaded,
-    createMessage,
   };
 };

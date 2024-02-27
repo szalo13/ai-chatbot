@@ -5,10 +5,15 @@ import { DBModule } from './module/db/db.module';
 import * as session from 'express-session';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AccountModule } from './module/account/account.module';
-import { ChatModule } from './module/chat/chat.module';
+import { ChatbotChatModule } from './module/chat/chatbot.chat.module';
 
 @Module({
-  imports: [DBModule, ChatModule, ScheduleModule.forRoot(), AccountModule],
+  imports: [
+    DBModule,
+    ChatbotChatModule,
+    ScheduleModule.forRoot(),
+    AccountModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

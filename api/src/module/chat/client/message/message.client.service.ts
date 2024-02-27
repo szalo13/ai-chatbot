@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ModelService } from '../../chatbot/model/model.service';
-import { ChatStatus } from '../../chat.model';
-import { ChatService } from '../../chat.service';
+import { ChatStatus } from '../../chat/chat.model';
 import { MessageService } from '../../message/message.service';
 import { MessageSenderType } from '../../message/message.model';
 import {
@@ -9,6 +8,7 @@ import {
   IMessageCreateResponse,
 } from './message.client.model';
 import { plainToClass } from 'class-transformer';
+import { ChatService } from '../../chat/chat.service';
 
 @Injectable()
 export class MessageClientService {
@@ -18,7 +18,7 @@ export class MessageClientService {
     private readonly modelService: ModelService,
   ) {}
 
-  async createEscaledMessage(
+  private async createEscalatedMessage(
     chatId: number,
     message: string,
   ): Promise<IMessageCreateResponse> {
@@ -34,17 +34,20 @@ export class MessageClientService {
     }).toValidatedView();
   }
 
-  async createBotMessage(
+  private async createBotMessage(
     chatId: number,
     modelPublicId: string,
     message: string,
   ): Promise<IMessageCreateResponse> {
-    const answear = await this.modelService.askQuestion(modelPublicId, message);
-
-    const [originalMessage, responseMessage] = await Promise.all([
+    const [originalMessage, botResponse] = await Promise.all([
       this.messageService.create(message, chatId, MessageSenderType.CLIENT),
-      this.messageService.create(answear, chatId, MessageSenderType.BOT),
+      await this.modelService.askQuestion(modelPublicId, message),
     ]);
+    const responseMessage = await this.messageService.create(
+      botResponse.answear,
+      chatId,
+      MessageSenderType.BOT,
+    );
 
     return plainToClass(CreateMessageResponse, {
       originalMessage,
@@ -72,6 +75,6 @@ export class MessageClientService {
       );
     }
 
-    return this.createEscaledMessage(chat.id, message);
+    return this.createEscalatedMessage(chat.id, message);
   }
 }

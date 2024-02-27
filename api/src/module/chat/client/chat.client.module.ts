@@ -8,19 +8,20 @@ import { ChatClientController } from './chat.client.controller';
 import { ChatClientService } from './chat.client.service';
 import { ChatClientRepository } from './chat.client.repository';
 import { ChatbotModule } from '../chatbot/chatbot.module';
+import { MessageClientModule } from './message/message.client.module';
+import { MessageModule } from '../message/message.module';
+import { ChatModule } from '../chat/chat.module';
 
 @Module({
   imports: [
-    DBModule,
-    AwsModule,
-    ModelModule,
+    MessageClientModule,
     ChatbotModule,
-    ConfigModule.forRoot({
-      load: [chatbotConfig],
-      envFilePath: `.env.${process.env.NODE_ENV}`,
-    }),
+    DBModule,
+    MessageModule,
+    ChatModule,
   ],
   controllers: [ChatClientController],
   providers: [ChatClientService, ChatClientRepository],
+  exports: [ChatClientService],
 })
 export class ChatClientModule {}

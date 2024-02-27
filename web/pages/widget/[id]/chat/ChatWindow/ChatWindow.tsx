@@ -4,8 +4,9 @@ import Message from "./components/Message";
 import SendIcon from "./components/SendIcon.svg";
 
 interface IMessage {
+  id: string;
   text: string;
-  type: "owner" | "responder" | "bot";
+  type: "owner" | "responder";
   imgSrc: string;
 }
 
@@ -40,7 +41,7 @@ const ChatWindow = ({
         className="flex flex-col space-y-4 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
       >
         {messages.map((message) => (
-          <Message key={message.text} {...message} />
+          <Message key={message.id} {...message} />
         ))}
         <div>
           <div className="flex items-end">

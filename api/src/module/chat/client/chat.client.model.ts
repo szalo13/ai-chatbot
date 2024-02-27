@@ -4,7 +4,7 @@ import {
   ChatMessageClientView,
   IMessageClientView,
 } from './message/message.client.model';
-import { ChatStatus } from '../chat.model';
+import { ChatStatus } from '../chat/chat.model';
 
 export interface INewClientChat {
   chatbotPublicId: string;
@@ -64,8 +64,8 @@ export class ClientChatView {
   clientId: string;
 
   @Transform(({ value }) => value.toString())
-  @IsEnum(['BOT', 'HUMAN'])
-  status: string;
+  @IsEnum(['BOT', 'ESCALATED'])
+  status: ChatStatus;
 
   @Transform(({ value }) => plainToClass(ClientChatbotView, value))
   chatbot: ClientChatbotView;

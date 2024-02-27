@@ -8,6 +8,10 @@ import { ChatbotConfig } from '../chatbot.config';
 import { IQueryModelPayload } from './model.model';
 import { Model } from '@prisma/client';
 
+interface IAskQuestionResponse {
+  answear: string;
+}
+
 @Injectable()
 export class ModelService {
   protected readonly logger: Logger = new Logger(ModelService.name);
@@ -46,7 +50,10 @@ export class ModelService {
     return datasources;
   }
 
-  async askQuestion(publicId: string, msg: string) {
+  async askQuestion(
+    publicId: string,
+    msg: string,
+  ): Promise<IAskQuestionResponse> {
     const model = await this.modelRepository.findByPublicId(publicId);
     if (!model) throw new NotFoundException('Model not found');
 
@@ -63,6 +70,6 @@ export class ModelService {
     const data = JSON.parse(res.data);
     if (data.errorMessage) throw new Error(res.data);
 
-    return JSON.parse(res.data);
+    return JSON.parse(res.data) as IAskQuestionResponse;
   }
 }

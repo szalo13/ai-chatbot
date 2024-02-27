@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ModelModule } from '../../chatbot/model/model.module';
-import { DBModule } from '../../../db/db.module';
 import { MessageClientController } from './message.client.controller';
 import { MessageModule } from '../../message/message.module';
+import { MessageClientService } from './message.client.service';
+import { ChatModule } from '../../chat/chat.module';
 
 @Module({
-  imports: [DBModule, ModelModule, MessageModule],
+  imports: [ModelModule, MessageModule, ChatModule],
   controllers: [MessageClientController],
-  providers: [],
+  providers: [MessageClientService],
 })
 export class MessageClientModule {}
