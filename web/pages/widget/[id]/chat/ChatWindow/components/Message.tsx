@@ -14,14 +14,15 @@ const Message = ({ text, type, imgSrc }: IMessagePropTypes) => {
         className={classNames([
           "flex items-end",
           {
-            ["justify-end"]: type === "owner",
+            ["justify-end pl-16"]: type === "owner",
+            ["pr-16"]: type === "responder",
           },
         ])}
       >
         <div
           className={classNames([
             "flex flex-col space-y-2 text-md leading-tight max-w-lg mx-2 rounded-xl",
-            { ["bg-gray-50"]: type === "responder" },
+            { ["bg-gray-100"]: type === "responder" },
             { ["bg-black text-white"]: type === "owner" },
           ])}
         >

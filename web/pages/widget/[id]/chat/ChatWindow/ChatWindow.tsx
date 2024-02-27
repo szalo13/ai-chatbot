@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import LoadingIndicator from "./components/LoadingIndicator";
 import Message from "./components/Message";
 import SendIcon from "./components/SendIcon.svg";
@@ -21,6 +21,7 @@ const ChatWindow = ({
   messages,
   onSubmit,
 }: IChatbotWindowPropTypes) => {
+  const messagesEndRef = useRef(null);
   const [inputValue, setInputValue] = useState("");
 
   const handleButtonClick = () => {
@@ -34,11 +35,31 @@ const ChatWindow = ({
     setInputValue("");
   };
 
+  // Scroll to bottom whenever messages change
+  useEffect(() => {
+    // Function to scroll to the bottom of the messages list
+    const scrollToBottom = () => {
+      if (!messagesEndRef.current) return;
+      (messagesEndRef.current as any).scrollIntoView({ behavior: "smooth" });
+    };
+    scrollToBottom();
+  }, [messages]);
+
+  // Scroll to bottom whenever messages change
+  useEffect(() => {
+    // Function to scroll to the bottom of the messages list
+    const scrollToBottom = () => {
+      if (!messagesEndRef.current) return;
+      (messagesEndRef.current as any).scrollIntoView();
+    };
+    scrollToBottom();
+  }, []);
+
   return (
     <div className="flex-1 justify-between flex flex-col h-full w-full">
       <div
         id="messages"
-        className="flex flex-col space-y-4 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
+        className="flex flex-col space-y-4 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch pt-4"
       >
         {messages.map((message) => (
           <Message key={message.id} {...message} />
@@ -50,10 +71,11 @@ const ChatWindow = ({
             </div>
           </div>
         </div>
+        <div ref={messagesEndRef} /> {/* Empty div used for scrolling */}
       </div>
       <form
         onSubmit={hanldeFormSubmit}
-        className="block border-t-2 border-gray-200 pt-4 sm:mb-0"
+        className="block border-t-2 border-gray-200 pt-4 px-2 pb-2 sm:mb-0"
       >
         <div className="relative flex">
           <input
