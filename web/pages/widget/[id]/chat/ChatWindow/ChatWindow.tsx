@@ -43,7 +43,7 @@ const ChatWindow = ({
       (messagesEndRef.current as any).scrollIntoView({ behavior: "smooth" });
     };
     scrollToBottom();
-  }, [messages]);
+  }, [messages, responding]);
 
   // Scroll to bottom whenever messages change
   useEffect(() => {
@@ -64,13 +64,15 @@ const ChatWindow = ({
         {messages.map((message) => (
           <Message key={message.id} {...message} />
         ))}
-        <div>
-          <div className="flex items-end">
-            <div className="flex flex-col space-y-2 text-md leading-tight mx-2 order-2 items-start">
-              {responding && <LoadingIndicator />}
+        {responding && (
+          <div>
+            <div className="flex items-end">
+              <div className="flex flex-col space-y-2 text-md leading-tight mx-2 order-2 items-start">
+                {<LoadingIndicator />}
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <div ref={messagesEndRef} /> {/* Empty div used for scrolling */}
       </div>
       <form

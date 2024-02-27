@@ -4,16 +4,14 @@ import { useChatMessagesRequests } from "./useChatMessagesRequests";
 import { useChat } from "./useChat";
 
 interface IMessagesManagerProps {
-  chatbotPublicId: string;
   initialMessages: IMessageClientView[];
 }
 
 export const useMessagesManager = ({
-  chatbotPublicId,
   initialMessages,
 }: IMessagesManagerProps) => {
   const chatUtils = useChat();
-  const [loading, setLoading] = useState(false);
+  const [responding, setResponding] = useState(false);
   const messageReq = useChatMessagesRequests();
   const [messages, _setMessages] = useState<IMessage[]>(
     initialMessages.map((msg) => ({
@@ -23,6 +21,7 @@ export const useMessagesManager = ({
   );
 
   const createMessage = async (text: string) => {
+    setResponding(true);
     _setMessages((prev) => [
       ...prev,
       {
@@ -37,8 +36,9 @@ export const useMessagesManager = ({
     const clientId = chatUtils.getClientId();
     if (!clientId) return;
 
-    setLoading(true);
     const response = await messageReq.sendMessage(clientId, text);
+    setResponding(false);
+
     if (!response) return;
 
     _setMessages((prev) => {
@@ -60,12 +60,11 @@ export const useMessagesManager = ({
 
       return newMessages;
     });
-    setLoading(false);
   };
 
   return {
     messages,
-    loading,
+    responding,
     createMessage,
   };
 };

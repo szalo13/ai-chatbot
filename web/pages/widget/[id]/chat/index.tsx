@@ -48,12 +48,12 @@ const mapMessageType = (type: MessageSenderType) => {
 const ChatWidget = () => {
   const widget = useChatWidget();
   const msgManager = useMessagesManager({
-    chatbotPublicId: widget.chatbotPublicId,
     initialMessages: widget.messages,
   });
 
   return (
     <ChatWindow
+      responding={msgManager.responding}
       onSubmit={msgManager.createMessage}
       messages={msgManager.messages.map((msg) => ({
         id: msg.publicId,

@@ -4,6 +4,8 @@ export enum MessageSenderType {
   MEMBER = "MEMBER",
 }
 
+export enum ChatStatus {}
+
 export interface IChlientChatbotModelView {
   publicId: string;
 }
