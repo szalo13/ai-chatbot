@@ -81,9 +81,9 @@ export const ChatbotPageProvider = ({
     if (initialized.current) return;
     initialized.current = true;
 
-    const chatbotId = params.id as string;
+    const chatbotId = params?.id as string;
     fetch(chatbotId);
-  }, [fetch, params.id, modelWS]);
+  }, [fetch, params?.id, modelWS]);
 
   return (
     <ChatbotPageContext.Provider

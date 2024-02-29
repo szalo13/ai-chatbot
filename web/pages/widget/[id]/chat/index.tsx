@@ -3,8 +3,8 @@
 import ChatWidgetLayout from "./layout/ChatWidgetLayout";
 import ChatWindow from "./ChatWindow/ChatWindow";
 import { ChatWidgetProvider, useChatWidget } from "./context";
-import { MessageSenderType } from "../../chat.model";
 import { useMessagesManager } from "../../hooks/useMessages";
+import { MessageSenderType } from "../../../../modules/chat/message/message.model";
 
 const withLoadedChat = (Component: React.FC) => {
   const WithLoadedChatComponent = () => {

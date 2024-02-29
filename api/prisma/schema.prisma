@@ -28,6 +28,9 @@ model Chatbot {
 
 model Chat {
   id                    Int       @id @default(autoincrement())
+  publicId              String    @default(uuid()) @unique
+  organizationId        Int       // Foreign key
+  organization          Organization @relation(fields: [organizationId], references: [id])
   clientId              String    @unique
   chatbotId             Int       // Reference to the Chatbot
   chatbot               Chatbot   @relation(fields: [chatbotId], references: [id])
@@ -108,6 +111,7 @@ model Organization {
   name              String
   users             User[]    // One-to-many relationship with User
   chatbots          Chatbot[] // One-to-many relationship with Chatbot
+  chats             Chat[]    // One-to-many relationship with Chat
   models            Model[]   // One-to-many relationship with Model
 }
 

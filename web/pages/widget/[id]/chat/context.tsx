@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import useRequest from "../../../../hooks/useRequest";
 import { useGetOrCreateChat } from "../../hooks/useGetOrCreateChat";
-import { IClientChatView } from "../../chat.model";
+import { IClientChatView } from "../../chat.widget.model";
 
 export type ChatWidgetContextType = {
   chatbotPublicId: string;

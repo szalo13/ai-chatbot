@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   // Preset for assets when stored on s3 bucket
   images: {
     unoptimized: true,

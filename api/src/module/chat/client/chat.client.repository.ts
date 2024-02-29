@@ -32,11 +32,13 @@ export class ChatClientRepository {
     clientId: string,
     status: ChatStatus,
     chatbotId: number,
+    organizationId: number,
   ) {
     return this.prisma.chat.create({
       data: {
         status: status,
         clientId: clientId,
+        organization: { connect: { id: organizationId } },
         chatbot: { connect: { id: chatbotId } },
       },
       include: CLIENT_VIEW_INCLUDE,

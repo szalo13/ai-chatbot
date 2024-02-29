@@ -27,4 +27,21 @@ export class ChatRepository {
       },
     });
   }
+
+  findManyByOrganizationWithChatbotAndLastMessage(organizationId: number) {
+    return this.prisma.chat.findMany({
+      where: {
+        organizationId: organizationId,
+      },
+      include: {
+        chatbot: true,
+        messages: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+          take: 1,
+        },
+      },
+    });
+  }
 }

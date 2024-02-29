@@ -1,8 +1,4 @@
-export enum MessageSenderType {
-  BOT = "BOT",
-  CLIENT = "CLIENT",
-  MEMBER = "MEMBER",
-}
+import { MessageSenderType } from "../../modules/chat/message/message.model";
 
 export enum ChatStatus {}
 

@@ -1,4 +1,4 @@
-import { IClientChatView } from "../chat.model";
+import { IClientChatView } from "../chat.widget.model";
 import { useChat } from "./useChat";
 
 export const useGetOrCreateChat = () => {

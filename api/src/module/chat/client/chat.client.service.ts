@@ -42,6 +42,7 @@ export class ChatClientService {
         uuidv4(),
         ChatStatus.BOT,
         chatbot.id,
+        chatbot.organizationId,
       );
     return plainToClass(ClientChatView, newChatEntity).toValidatedView();
   }

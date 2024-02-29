@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
-import { IMessage, IMessageClientView, MessageSenderType } from "../chat.model";
+import { IMessage, IMessageClientView } from "../chat.widget.model";
 import { useChatMessagesRequests } from "./useChatMessagesRequests";
 import { useChat } from "./useChat";
+import { MessageSenderType } from "../../../modules/chat/message/message.model";
 
 interface IMessagesManagerProps {
   initialMessages: IMessageClientView[];

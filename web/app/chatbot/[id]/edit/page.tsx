@@ -23,10 +23,10 @@ const ChatbotEditPage = () => {
           placeholder="Train"
           disabled={
             !chatbotEditPage.canTrain ||
-            chatbot.model.status === IModelStatus.DuringTraining
+            chatbot.model.status === IModelStatus.DURING_TRAINING
           }
           onClick={async () => {
-            setModelStatus(IModelStatus.DuringTraining);
+            setModelStatus(IModelStatus.DURING_TRAINING);
             await modelReq.train(chatbot.model.publicId);
           }}
         >

@@ -1,5 +1,5 @@
 import { API_URL } from "../../../const/api";
-import { IMessageCreateResponse } from "../chat.model";
+import { IMessageCreateResponse } from "../chat.widget.model";
 
 export const useChatMessagesRequests = () => {
   /**
