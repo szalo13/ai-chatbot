@@ -13,10 +13,7 @@ import { IChatbot } from "../../../modules/chatbot/chatbot.model";
 import { useChatbotRequests } from "../../../modules/chatbot/hooks/useChatbotRequests";
 import useRequest from "../../../hooks/useRequest";
 import { useParams } from "next/navigation";
-import {
-  IDataSource,
-  IDataSourceType,
-} from "../../../modules/chatbot/model/datasource/datasource.model";
+import { IDataSource } from "../../../modules/chatbot/model/datasource/datasource.model";
 import { useChatbotRoutes } from "../../../modules/chatbot/hooks/useChatbotRoutes";
 import { useModelTrainedSubscriber } from "../../../modules/chatbot/model/hooks/useModelTrainedSubscriber";
 import { useModelWebSocket } from "../../../modules/chatbot/model/hooks/useModelWebSocket";

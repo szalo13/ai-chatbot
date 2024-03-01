@@ -16,4 +16,14 @@ export class MessageRepository {
       },
     });
   }
+
+  findManyByChatPublicId(chatPublicId: string) {
+    return this.prisma.message.findMany({
+      where: {
+        chat: {
+          publicId: chatPublicId,
+        },
+      },
+    });
+  }
 }

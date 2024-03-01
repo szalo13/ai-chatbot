@@ -15,7 +15,7 @@ export const ChatPage = ({ children }: any) => {
     }
   }, [chats, chatRoutes]);
 
-  return <>Chat Page</>;
+  return <></>;
 };
 
 export default ChatPage;

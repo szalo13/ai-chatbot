@@ -10,12 +10,14 @@ interface IMessage {
 }
 
 interface IChatbotWindowPropTypes {
+  hideInput?: boolean;
   responding?: boolean;
   messages: IMessage[];
   onSubmit: (message: string) => void;
 }
 
 const ChatWindow = ({
+  hideInput,
   responding,
   messages,
   onSubmit,
@@ -50,34 +52,36 @@ const ChatWindow = ({
           </div>
         </div>
       </div>
-      <form
-        onSubmit={hanldeFormSubmit}
-        className="block border-t-2 border-gray-200 pt-4 sm:mb-0"
-      >
-        <div className="relative flex">
-          <input
-            type="text"
-            placeholder="Say something..."
-            autoComplete="off"
-            autoFocus={true}
-            className="text-md w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-5 pr-16 bg-gray-100 border-2 border-gray-200 focus:border-blue-500 rounded-full py-2"
-            x-ref="input"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-          />
-          <div className="absolute right-2 items-center inset-y-0 hidden sm:flex">
-            <button
-              onClick={handleButtonClick}
-              type="button"
-              className="inline-flex items-center justify-center rounded-full h-8 w-8 transition duration-200 ease-in-out text-white bg-black hover:bg-gray-800 focus:outline-none"
-            >
-              <div className="h-5 w-5">
-                <SendIcon />
-              </div>
-            </button>
+      {!hideInput && (
+        <form
+          onSubmit={hanldeFormSubmit}
+          className="block border-t-2 border-gray-200 pt-4 sm:mb-0"
+        >
+          <div className="relative flex">
+            <input
+              type="text"
+              placeholder="Say something..."
+              autoComplete="off"
+              autoFocus={true}
+              className="text-md w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-5 pr-16 bg-gray-100 border-2 border-gray-200 focus:border-blue-500 rounded-full py-2"
+              x-ref="input"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+            />
+            <div className="absolute right-2 items-center inset-y-0 hidden sm:flex">
+              <button
+                onClick={handleButtonClick}
+                type="button"
+                className="inline-flex items-center justify-center rounded-full h-8 w-8 transition duration-200 ease-in-out text-white bg-black hover:bg-gray-800 focus:outline-none"
+              >
+                <div className="h-5 w-5">
+                  <SendIcon />
+                </div>
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { JwtGuard } from '../../account/auth/jwt/jwt.guard';
 import { GetJWTUser } from '../../account/auth/jwt/get-jwt-user.decorator';
@@ -12,5 +12,13 @@ export class ChatController {
   @Get('/')
   findMany(@GetJWTUser() user?: User) {
     return this.chatService.findManyByOrganization(user);
+  }
+
+  @Get('/:chatPublicId')
+  findOne(
+    @Param('chatPublicId') chatPublicId: string,
+    @GetJWTUser() user: User,
+  ) {
+    return this.chatService.findByPublicId(user, chatPublicId);
   }
 }

@@ -44,4 +44,26 @@ export class ChatRepository {
       },
     });
   }
+
+  findByPublicIdWithChatbotAndModel(chatPublicId: string) {
+    return this.prisma.chat.findFirst({
+      where: {
+        publicId: chatPublicId,
+      },
+      include: {
+        chatbot: {
+          select: {
+            id: true,
+            publicId: true,
+            model: {
+              select: {
+                id: true,
+                publicId: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
 }

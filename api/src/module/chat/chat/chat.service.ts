@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ChatRepository } from './chat.repository';
 import { User } from '@prisma/client';
 
@@ -15,5 +19,18 @@ export class ChatService {
     return this.chatRepository.findManyByOrganizationWithChatbotAndLastMessage(
       user.organizationId,
     );
+  }
+
+  async findByPublicId(user: User, chatPublicId: string) {
+    const chat = await this.chatRepository.findByPublicIdWithChatbotAndModel(
+      chatPublicId,
+    );
+    if (!chat) throw new NotFoundException('Chat not found');
+
+    if (chat.organizationId !== user.organizationId) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+
+    return chat;
   }
 }

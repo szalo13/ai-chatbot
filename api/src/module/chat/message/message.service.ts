@@ -9,4 +9,8 @@ export class MessageService {
   async create(content: string, chatId: number, senderType: MessageSenderType) {
     return this.messageRepository.create(content, chatId, senderType);
   }
+
+  async findManyByChatPublicId(chatPublicId: string) {
+    return this.messageRepository.findManyByChatPublicId(chatPublicId);
+  }
 }

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { IMessage, IMessageClientView } from "../chat.widget.model";
 import { useChatMessagesRequests } from "./useChatMessagesRequests";
 import { useChat } from "./useChat";

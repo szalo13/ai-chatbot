@@ -1,7 +1,7 @@
 import { useAuthorizedRequest } from "../../auth/useAuthorizedRequest";
 import { API_URL } from "../../../const/api";
 import { AxiosResponse } from "axios";
-import { IChat, IChatListElement } from "../chat.model";
+import { IMessage } from "../message/message.model";
 
 const CHAT_URL = `${API_URL}/chat`;
 
@@ -9,16 +9,16 @@ export const useChatMessagesRequests = () => {
   const authRequest = useAuthorizedRequest();
 
   const getMany = async (
-    publicId: string
-  ): Promise<AxiosResponse<IChatListElement[]>> => {
-    return authRequest.get(`${CHAT_URL}/${publicId}/message`);
+    chatPublicId: string
+  ): Promise<AxiosResponse<IMessage[]>> => {
+    return authRequest.get(`${CHAT_URL}/${chatPublicId}/message`);
   };
 
   const create = async (
-    publicId: string,
+    chatPublicId: string,
     text: string
-  ): Promise<AxiosResponse<IChat>> => {
-    return authRequest.post(`${CHAT_URL}/${publicId}/message`, {
+  ): Promise<AxiosResponse<IMessage>> => {
+    return authRequest.post(`${CHAT_URL}/${chatPublicId}/message`, {
       content: text,
     });
   };
