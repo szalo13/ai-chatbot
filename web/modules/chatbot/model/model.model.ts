@@ -1,11 +1,11 @@
 import { IDataSource } from "./datasource/datasource.model";
 
 export enum IModelStatus {
-  notTrained = "notTrained",
-  AwaitingTraining = "awaitingTraining",
-  DuringTraining = "duringTraining",
-  Created = "created",
-  Failed = "failed",
+  NOT_TRAINED = "NOT_TRAINED",
+  AWAITING_TRAINING = "AWAITING_TRAINING",
+  DURING_TRAINING = "DURING_TRAINING",
+  CREATED = "CREATED",
+  FAILED = "FAILED",
 }
 
 export interface IChatbotModel {

@@ -10,7 +10,7 @@ resource "aws_lambda_function" "pdf_handler_lambda" {
   environment {
     variables = {
       "CHATBOT_SQS_BUS_URL" = aws_sqs_queue.chatbot_model_queue.url,
-      "OPENAI_API_KEY" = local.open_api_key,
+      "ENV"                 = var.environment
     }
   }
 
@@ -31,7 +31,7 @@ resource "aws_lambda_function" "model_create_lambda" {
   environment {
     variables = {
       "CHATBOT_SQS_BUS_URL" = aws_sqs_queue.chatbot_model_queue.url,
-      "OPENAI_API_KEY" = local.open_api_key,
+      "ENV"                 = var.environment
     }
   }
 
@@ -51,7 +51,7 @@ resource "aws_lambda_function" "model_query_lambda" {
 
   environment {
     variables = {
-      "OPENAI_API_KEY" = local.open_api_key,
+      "ENV"                 = var.environment
     }
   }
 

@@ -10,12 +10,14 @@ interface IMessage {
 }
 
 interface IChatbotWindowPropTypes {
+  hideInput?: boolean;
   responding?: boolean;
   messages: IMessage[];
   onSubmit: (message: string) => void;
 }
 
 const ChatWindow = ({
+  hideInput,
   responding,
   messages,
   onSubmit,
@@ -34,26 +36,26 @@ const ChatWindow = ({
   };
 
   return (
-    <div>
-      <div className="flex-1 p:2 sm:p-6 justify-between flex flex-col h-full bg-white">
-        <div
-          id="messages"
-          className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
-        >
-          {messages.map((message) => (
-            <Message key={message.text} {...message} />
-          ))}
-          <div>
-            <div className="flex items-end">
-              <div className="flex flex-col space-y-2 text-md leading-tight mx-2 order-2 items-start">
-                {responding && <LoadingIndicator />}
-              </div>
+    <div className="flex-1 justify-between flex flex-col h-full w-full">
+      <div
+        id="messages"
+        className="flex flex-col space-y-4 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
+      >
+        {messages.map((message) => (
+          <Message key={message.text} {...message} />
+        ))}
+        <div>
+          <div className="flex items-end">
+            <div className="flex flex-col space-y-2 text-md leading-tight mx-2 order-2 items-start">
+              {responding && <LoadingIndicator />}
             </div>
           </div>
         </div>
+      </div>
+      {!hideInput && (
         <form
           onSubmit={hanldeFormSubmit}
-          className="block border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0"
+          className="block border-t-2 border-gray-200 pt-4 sm:mb-0"
         >
           <div className="relative flex">
             <input
@@ -79,7 +81,7 @@ const ChatWindow = ({
             </div>
           </div>
         </form>
-      </div>
+      )}
     </div>
   );
 };

@@ -20,12 +20,15 @@ FAISS_MODEL_PATH = "/tmp/trained"
 CHATBOT_SQS_BUS_URL = os.getenv("CHATBOT_SQS_BUS_URL")
 AWS_REGION = os.getenv("AWS_REGION")
 SQS_EVENT_NAME = "model:created"
-
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
-os.environ["TRANSFORMERS_CACHE"] = CACHE_DIR
+ENV = os.getenv("ENV")
+OPEN_API_SECRET_NAME = ENV + "-open-api-key"
 
 sqs_client = boto3.client('sqs', region_name=AWS_REGION)
 s3_client = boto3.client("s3")
+secret_client = boto3.client('secretsmanager', region_name=AWS_REGION)
+
+os.environ["OPENAI_API_KEY"] = secret_client.get_secret_value(SecretId=OPEN_API_SECRET_NAME)['SecretString']
+os.environ["TRANSFORMERS_CACHE"] = CACHE_DIR
 
 def local_filename(file):
     return CACHE_DIR + "/" + os.path.basename(file["path"])

@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "ModelStatus" AS ENUM ('awaitingTraining', 'pending', 'created', 'failed');
+CREATE TYPE "ModelStatus" AS ENUM ('AWAITING_TRAINING', 'pending', 'created', 'FAILED');
 
 -- CreateEnum
 CREATE TYPE "DataSourceType" AS ENUM ('text', 'pdf');

@@ -2,13 +2,18 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DBModule } from './module/db/db.module';
-import { ChatbotModule } from './module/chatbot/chatbot.module';
 import * as session from 'express-session';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AccountModule } from './module/account/account.module';
+import { ChatbotChatModule } from './module/chat/chatbot.chat.module';
 
 @Module({
-  imports: [DBModule, ChatbotModule, ScheduleModule.forRoot(), AccountModule],
+  imports: [
+    DBModule,
+    ChatbotChatModule,
+    ScheduleModule.forRoot(),
+    AccountModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

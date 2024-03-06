@@ -13,10 +13,7 @@ import { IChatbot } from "../../../modules/chatbot/chatbot.model";
 import { useChatbotRequests } from "../../../modules/chatbot/hooks/useChatbotRequests";
 import useRequest from "../../../hooks/useRequest";
 import { useParams } from "next/navigation";
-import {
-  IDataSource,
-  IDataSourceType,
-} from "../../../modules/chatbot/model/datasource/datasource.model";
+import { IDataSource } from "../../../modules/chatbot/model/datasource/datasource.model";
 import { useChatbotRoutes } from "../../../modules/chatbot/hooks/useChatbotRoutes";
 import { useModelTrainedSubscriber } from "../../../modules/chatbot/model/hooks/useModelTrainedSubscriber";
 import { useModelWebSocket } from "../../../modules/chatbot/model/hooks/useModelWebSocket";
@@ -81,9 +78,9 @@ export const ChatbotPageProvider = ({
     if (initialized.current) return;
     initialized.current = true;
 
-    const chatbotId = params.id as string;
+    const chatbotId = params?.id as string;
     fetch(chatbotId);
-  }, [fetch, params.id, modelWS]);
+  }, [fetch, params?.id, modelWS]);
 
   return (
     <ChatbotPageContext.Provider
@@ -109,13 +106,13 @@ export const useChatbotPage = () => {
     [chatbot]
   );
   const groupedDataSources = useMemo(() => {
-    const grouped: Record<IDataSourceType, IDataSource[]> = {
+    const grouped: Record<string, IDataSource[]> = {
       text: [],
       pdf: [],
     };
 
     dataSources.forEach((dataSource) => {
-      grouped[dataSource.type].push(dataSource);
+      grouped[dataSource.type.toLocaleLowerCase()].push(dataSource);
     });
     return grouped;
   }, [dataSources]);

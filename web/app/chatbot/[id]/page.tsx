@@ -13,7 +13,7 @@ const ChatbotPage = () => {
 
   useEffect(() => {
     // Change page to edit if chatbot is not trained
-    if (chatbot && chatbot.model.status === IModelStatus.notTrained) {
+    if (chatbot && chatbot.model.status === IModelStatus.NOT_TRAINED) {
       chatbotRoutes.goToEdit(chatbot.publicId);
     }
   }, [chatbot, chatbotRoutes]);
@@ -25,7 +25,9 @@ const ChatbotPage = () => {
       <PrimaryButton onClick={() => chatbotRoutes.goToEdit(chatbot.publicId)}>
         Go to Edit
       </PrimaryButton>
-      <ChatbotChatWindowComponent modelPublicId={chatbot.model.publicId} />
+      <div className="h-96 bg-gray-50 sm:p-4 rounded-md mt-4">
+        <ChatbotChatWindowComponent modelPublicId={chatbot.model.publicId} />
+      </div>
     </div>
   );
 };

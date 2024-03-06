@@ -36,6 +36,9 @@ export class AuthController {
       provider: 'auth0',
       picture: profile.picture,
       locale: profile.locale,
+      organization: {
+        name: `${profile.displayName}'s Organization`,
+      },
     });
     const token = this.jwtService.sign(user, {
       secret: process.env.JWT_SECRET_KEY,

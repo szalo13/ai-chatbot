@@ -5,23 +5,28 @@ import {
   BellIcon,
   HomeIcon,
   LinkIcon,
-  NewspaperIcon,
+  ChatBubbleBottomCenterTextIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import classNames from "classnames";
 import Sidebar from "./molecules/Sidebar";
+import "./index.css";
 
 const NAVIGATION = {
   DASHBOARD: "/dashboard",
   CHATBOTS: "/chatbot",
-  Datasources: "/source",
+  CHAT: "/chat",
   LOGOUT: "/logout",
 };
 
 const navigation = [
   { name: "Dashboard", href: NAVIGATION.DASHBOARD, icon: HomeIcon },
   { name: "Chatbot", href: NAVIGATION.CHATBOTS, icon: LinkIcon },
-  { name: "Datasources", href: NAVIGATION.Datasources, icon: NewspaperIcon },
+  {
+    name: "Chats",
+    href: NAVIGATION.CHAT,
+    icon: ChatBubbleBottomCenterTextIcon,
+  },
 ];
 const userNavigation = [
   { name: "Your Profile", href: "#" },

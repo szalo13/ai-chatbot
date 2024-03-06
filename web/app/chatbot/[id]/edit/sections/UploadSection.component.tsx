@@ -23,7 +23,7 @@ const UploadSection = ({}: IUploadSectionPropTypes) => {
     chatbotEditPage.decrementRequestCount();
   };
 
-  const handleUploadFailed = () => {
+  const handleUploadFAILED = () => {
     chatbotEditPage.decrementRequestCount();
   };
 
@@ -35,7 +35,7 @@ const UploadSection = ({}: IUploadSectionPropTypes) => {
         return (
           <DataSourceUploadComponent
             onUploadSuccess={handleUploadSuccess}
-            onUploadFailed={handleUploadFailed}
+            onUploadFAILED={handleUploadFAILED}
             modelPublicId={chatbot.model.publicId}
             type={IDataSourceType.Pdf}
             file={file}
